@@ -1,6 +1,6 @@
 {
   "name": "ef-crm-app",
-  "app_id": "",
+  "app_id": "com.extensivepro.crmapp",
   "gulpStartupTasks": [
     "sass",
     "watch"
