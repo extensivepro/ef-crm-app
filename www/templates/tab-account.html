@@ -1,5 +1,55 @@
-<ion-view title="Account">
+<ion-view title="我的账号">
   <ion-content class="padding">
-    <h1>Account</h1>
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img src="img/avatar.png">
+        <h2>{{ssc.name}}</h2>
+        <p>卡号 {{ssc.cardNo}}</p>
+      </div>
+
+      <div class="item">
+        身份证 
+        <span class="item-note positive">
+          {{ssc.idcard}}
+        </span>
+      </div>
+      <a href="#" class="item item-icon-right">
+        账户余额
+        <span class="item-note positive">
+          {{ssc.balance/100 | currency: "￥"}}
+        </span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </a>
+
+    </div>
+    
+    <div class="list card">
+      <div class="item item-divider">
+        联系方式
+      </div>
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-ios7-telephone"></i>
+        {{ssc.telephone}}
+        <span class="item-note">
+          修改
+        </span>
+      </a>
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-iphone"></i>
+        {{ssc.mobilephone}}
+        <span class="item-note">
+          修改
+        </span>
+      </a>
+    </div>
+    
+    <div class="card">
+      <a ng-click="logout()" class="button button-full button-assertive">
+        退出
+      </a>
+    </div>
+
   </ion-content>
+
 </ion-view>

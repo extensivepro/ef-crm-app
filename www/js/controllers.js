@@ -11,5 +11,18 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, $state, User, Employe) {
+  
+  $scope.employe = {"name":'', phone:''}
+  $scope.logout = function () {
+    User.logout()
+    $state.go('login')
+  }
+  
+  User.getCurrent(function (user) {
+    Employe.findById({id:user.employeId}, function (employe) {
+      $scope.employe = employe
+    })
+  })
+  
 });
