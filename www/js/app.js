@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, User, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,7 +18,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    
+    User.getCurrent(function (user) {
+      $rootScope.currentUser = user
+    }, function () {
+      $rootScope.$broadcast('AUTH_LOGOUT')
+    })
   });
+  
+  $rootScope.$on('AUTH_LOGIN', function(e, accessToken) {
+    $rootScope.currentUser = accessToken.user
+    if (!accessToken.user.sscId) {
+      $state.go('register')
+    } else {
+      $state.go('tab.task');
+    }
+  });
+
+  $rootScope.$on('AUTH_LOGOUT', function(e, user) {
+    $state.go('login')
+  });
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -29,6 +49,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+    // login 
+    .state('login', {
+      url: "/login",
+      templateUrl: "templates/login.html",
+      controller: 'LoginCtrl'
+    })
+
+    // register 
+    .state('register', {
+      url: "/register",
+      templateUrl: "templates/register.html",
+      controller: 'RegisterCtrl'
+    })
+    
     // setup an abstract state for the tabs directive
     .state('tab', {
       url: "/tab",

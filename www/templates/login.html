@@ -1,0 +1,23 @@
+<ion-view title="登录" hide-back-button="true">
+  <ion-content has-header="true" has-tabs="true" padding="true">
+    <form ng-submit="tryLogin()">
+      <div class="list">
+
+        <label class="item item-input">
+          <input type="text" placeholder="用户名" ng-model="loginData.username">
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="密码" ng-model="loginData.password">
+        </label>
+
+        <div>
+          <button class="button button-block button-positive" type="submit">登录</button>
+        </div>
+        <hr />
+        <div>
+          <button class="button button-block button-energized" type="button" ng-click="tryRegister()">注册</button>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
