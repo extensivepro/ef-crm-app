@@ -1,6 +1,9 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['baseController'])
 
-.controller('MemberCtrl', function($scope) {
+.controller('MemberCtrl', function($scope, $controller, Member) {
+  $controller('ListCtrl', {$scope: $scope})
+  $scope.resource = Member
+  $scope.search.orFields = ['name', 'phone']
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {
