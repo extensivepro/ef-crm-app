@@ -137,5 +137,17 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   localStorageServiceProvider
     .setPrefix('ef-crm-app')
     .setNotify(true, true)
-});
+})
+
+.filter("roleDictionary", function () {
+  var dictionary = {
+    "shopManager": "店长",
+    "cashier": "收银员"
+  }
+  
+  return function (key) {
+    return dictionary[key];
+  }
+})
+
 

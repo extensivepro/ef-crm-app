@@ -21,24 +21,26 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, User, localStorageService) {
-  $scope.loginData = {}
-  var property = 'loginData'
-  if (!localStorageService.get(property)) {
-    localStorageService.set(property, $scope.loginData)
-  }
-
-  localStorageService.bind($scope, property)
+.controller('LoginCtrl', function($scope, $rootScope, User, localStorageService, $ionicPopup, $timeout) {
+  $scope.loginData = localStorageService.get('loginData') || {}
   
   var login = function (loginData) {
     User.login(loginData, function (accessToken) {
+      localStorageService.set('loginData', $scope.loginData)
       $rootScope.$broadcast('AUTH_LOGIN', accessToken)
     }, function (res) {
       if(res.status === 401 && loginData.realm !== "owner") {
         loginData.realm = "owner"
         login(loginData)
       } else {
-        console.log('Try Login Error', res)
+        var myPopup = $ionicPopup.show({
+          title: '登录失败',
+          subTitle: '用户名密码不正确',
+          buttons: [{ text: '关闭' }]
+        })
+        $timeout(function() {
+           myPopup.close();
+        }, 3000)
       }
     })
   }
@@ -54,16 +56,20 @@ angular.module('starter.controllers', [])
     User.create(loginData, function (user) {
       login(loginData)
     }, function (res) {
-      if (res.data.error.message === 'username already exist') {
-        login(loginData)
-      } else {
-        console.log('Try register error', res)
-      }
+      var myPopup = $ionicPopup.show({
+        title: '注册失败',
+        subTitle: '手机已经存在，请直接登录或换其他手机',
+        buttons: [{ text: '关闭' }]
+      })
+      $timeout(function() {
+         myPopup.close();
+      }, 3000)
     })
   }
+  
 })
 
-.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User, $state, localStorageService) {
+.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User, localStorageService) {
   var now = Date.now()
   $scope.merchant = {
     name: "泛盈百货"+now,
