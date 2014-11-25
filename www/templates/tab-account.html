@@ -4,23 +4,28 @@
 
       <div class="item item-avatar">
         <img src="img/avatar.png">
-        <h2>{{ssc.name}}</h2>
-        <p>卡号 {{ssc.cardNo}}</p>
+        <h2>{{currentEmploye.name}} {{currentEmploye.role | uppercase}}</h2>
+        <p>
+          工号 {{currentEmploye.jobNumber}}
+        </p>
       </div>
 
-      <div class="item">
+      <a class="item item-icon-right">
         身份证 
         <span class="item-note positive">
-          {{ssc.idcard}}
+          {{currentEmploye.idcard}}
         </span>
-      </div>
-      <a href="#" class="item item-icon-right">
-        账户余额
         <span class="item-note positive">
-          {{ssc.balance/100 | currency: "￥"}}
+          修改
         </span>
         <i class="icon ion-ios7-arrow-right"></i>
       </a>
+      <div class="item">
+        入职时间
+        <span class="item-note positive">
+          {{dateFormat(currentEmploye.createdAt)}}
+        </span>
+      </div>
 
     </div>
     
@@ -28,19 +33,13 @@
       <div class="item item-divider">
         联系方式
       </div>
-      <a href="#" class="item item-icon-left">
+      <a class="item item-icon-left item-icon-right">
         <i class="icon ion-ios7-telephone"></i>
-        {{ssc.telephone}}
-        <span class="item-note">
+        {{currentEmploye.phone}}
+        <span class="item-note positive">
           修改
         </span>
-      </a>
-      <a href="#" class="item item-icon-left">
-        <i class="icon ion-iphone"></i>
-        {{ssc.mobilephone}}
-        <span class="item-note">
-          修改
-        </span>
+        <i class="icon ion-ios7-arrow-right"></i>
       </a>
     </div>
     

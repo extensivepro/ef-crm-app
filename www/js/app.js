@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform, $rootScope, User, $state) {
+.run(function($ionicPlatform, $rootScope, User, $state, Employe) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,18 +20,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
     
     User.getCurrent(function (user) {
-      $rootScope.currentUser = user
+      setCurrentUser(user)
     }, function () {
       $rootScope.$broadcast('AUTH_LOGOUT')
     })
   });
   
   $rootScope.$on('AUTH_LOGIN', function(e, accessToken) {
-    $rootScope.currentUser = accessToken.user
-    if (!accessToken.user.sscId) {
-      $state.go('register')
+    setCurrentUser(accessToken.user)
+    if (!accessToken.user.employeID) {
+      $state.go('register', {}, {location: false})
     } else {
-      $state.go('tab.task');
+      $state.go('tab.member');
     }
   });
 
@@ -39,9 +39,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     $state.go('login')
   });
   
+  var setCurrentUser = function (user) {
+    $rootScope.currentUser = user
+    if(user.employeID) {
+      Employe.findOne({
+        filter:{
+          where:{id:user.employeID}, 
+          include:['merchant', 'shop']
+        }
+      }, function (employe) {
+        $rootScope.currentEmploye = employe
+      }, function (res) {
+        console.log('Find employe error')
+      })
+    }
+  }
+  
+  $rootScope.dateFormat = function (date) {
+    return moment.unix(date).format('YYYY-MM-DD hh:mm:ss')
+  }
+  
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -72,12 +92,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
     // Each tab has its own nav history stack:
 
-    .state('tab.dash', {
-      url: '/dash',
+    .state('tab.member', {
+      url: '/member',
       views: {
-        'tab-dash': {
-          templateUrl: 'templates/tab-dash.html',
-          controller: 'DashCtrl'
+        'tab-member': {
+          templateUrl: 'templates/tab-member.html',
+          controller: 'MemberCtrl'
         }
       }
     })
@@ -112,7 +132,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/member');
 
+  localStorageServiceProvider
+    .setPrefix('ef-crm-app')
+    .setNotify(true, true)
 });
 

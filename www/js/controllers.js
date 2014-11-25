@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
+.controller('MemberCtrl', function($scope) {
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {
@@ -13,52 +13,79 @@ angular.module('starter.controllers', [])
 
 .controller('AccountCtrl', function($scope, $state, User, Employe) {
   
-  $scope.employe = {"name":'', phone:''}
   $scope.logout = function () {
-    User.logout()
-    $state.go('login')
-  }
-  
-  User.getCurrent(function (user) {
-    Employe.findById({id:user.employeId}, function (employe) {
-      $scope.employe = employe
+    User.logout(function () {
+      $state.go('login')
     })
-  })
-  
+  }
+
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, User) {
-  $scope.loginData = {username:"13357828347", password:"123456"}
-  $scope.tryLogin = function () {
-    User.login($scope.loginData, function (user) {
-      $rootScope.$broadcast('AUTH_LOGIN', user)
-    })
+.controller('LoginCtrl', function($scope, $rootScope, User, localStorageService) {
+  $scope.loginData = {}
+  var property = 'loginData'
+  if (!localStorageService.get(property)) {
+    localStorageService.set(property, $scope.loginData)
   }
+
+  localStorageService.bind($scope, property)
   
-  $scope.tryRegister = function () {
-    $scope.loginData.email = $scope.loginData.username+"@extensivepro.com"
-    User.create($scope.loginData, function (user) {
-      console.log('register', user)
-      $scope.tryLogin()
+  var login = function (loginData) {
+    User.login(loginData, function (accessToken) {
+      $rootScope.$broadcast('AUTH_LOGIN', accessToken)
     }, function (res) {
-      console.log('register error', res)
+      if(res.status === 401 && loginData.realm !== "owner") {
+        loginData.realm = "owner"
+        login(loginData)
+      } else {
+        console.log('Try Login Error', res)
+      }
+    })
+  }
+  
+  $scope.tryLogin = function (loginData) {
+    loginData.realm = "employe."+loginData.username
+    login(loginData)
+  }
+  
+  $scope.tryRegister = function (loginData) {
+    loginData.email = loginData.username+"@example.com"
+    loginData.realm = "owner"
+    User.create(loginData, function (user) {
+      login(loginData)
+    }, function (res) {
+      if (res.data.error.message === 'username already exist') {
+        login(loginData)
+      } else {
+        console.log('Try register error', res)
+      }
     })
   }
 })
 
-.controller('RegisterCtrl', function($scope, $rootScope, Merchant, Employe, User, $state) {
-  $scope.employe = {
-    "name":"张三丰", 
-    idcard:"320105196601122012", 
-    cardNo:"30012345678",
-    userId: $rootScope.currentUser.id,
-    telephone: $rootScope.currentUser.username,
-    mobilephone: $rootScope.currentUser.username
+.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User, $state, localStorageService) {
+  var now = Date.now()
+  $scope.merchant = {
+    name: "泛盈百货"+now,
+    fullName: "泛盈百货有限公司"+now,
+    ownerID: $scope.currentUser.id,
+    telephone: $scope.currentUser.username,
+    masterPhone: $scope.currentUser.username
+  }
+  
+  $scope.blurCb = function (event) {
+    $scope.merchant.fullName = $scope.merchant.name
   }
   
   $scope.tryMerchantRegister = function () {
-    Merchant.create($scope.ssc, function (ssc) {
-      $state.go('tab.task')
+    Merchant.create($scope.merchant, function (merchant) {
+      var loginData = localStorageService.get('loginData')
+      loginData.realm = "employe."+loginData.username
+      User.login(loginData, function (accessToken) {
+        $rootScope.$broadcast('AUTH_LOGIN', accessToken)
+      }, function (res) {
+        console.log('relogin as employe failure', res)
+      })
     })
   }
 })

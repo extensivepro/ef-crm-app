@@ -1,8 +1,5 @@
 angular.module('starter.services', ['lbServices'])
 
-/**
- * A simple example service that returns some data.
- */
 .factory('Friends', function() {
   // Might use a resource here that returns a JSON array
 
@@ -23,4 +20,4 @@ angular.module('starter.services', ['lbServices'])
       return friends[friendId];
     }
   }
-});
+})
