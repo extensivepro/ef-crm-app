@@ -79,6 +79,7 @@ angular.module('starter.controllers', ['baseController'])
         },
       ]
     }).then(function(res) {
+      if(!res) return;
       Point.create({
         point: res.point,
         memberID: $scope.entity.id,
@@ -92,6 +93,16 @@ angular.module('starter.controllers', ['baseController'])
       })
     })
   }
+  
+})
+
+.controller('MemberPointCtrl', function($scope, $controller, $stateParams, Point) {
+  $controller('ListCtrl', {$scope: $scope})
+  $scope.resource = Point
+  $scope.search.orFields = ['memberID']
+  $scope.search.text = $stateParams.memberID
+  $scope.includes = ['agent']
+
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {

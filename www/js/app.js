@@ -106,6 +106,15 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
         }
       }
     })
+    .state('tab.members-points', {
+      url: '/members/:memberID/points',
+      views: {
+        'tab-members': {
+          templateUrl: 'templates/member-point.html',
+          controller: 'MemberPointCtrl'
+        }
+      }
+    })
 
     .state('tab.bills', {
       url: '/bills',
@@ -177,7 +186,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
 
 .filter("dateFormat", function () {
   return function (date, format) {
-    format = format || 'YYYY-MM-DD hh:mm:ss'
+    format = format || 'YYYY-MM-DD HH:mm:ss'
     return moment.unix(date).format(format)
   }
 })
