@@ -92,34 +92,54 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
 
     // Each tab has its own nav history stack:
 
-    .state('tab.member', {
-      url: '/member',
+    .state('tab.members', {
+      url: '/members',
       views: {
-        'tab-member': {
+        'tab-members': {
           templateUrl: 'templates/tab-member.html',
           controller: 'MemberCtrl'
         }
       }
     })
 
-    .state('tab.friends', {
-      url: '/friends',
+    .state('tab.bills', {
+      url: '/bills',
       views: {
-        'tab-friends': {
+        'tab-bills': {
           templateUrl: 'templates/tab-friends.html',
           controller: 'FriendsCtrl'
         }
       }
     })
-    .state('tab.friend-detail', {
+    .state('tab.bills-detail', {
       url: '/friend/:friendId',
       views: {
-        'tab-friends': {
+        'tab-bills': {
           templateUrl: 'templates/friend-detail.html',
           controller: 'FriendDetailCtrl'
         }
       }
     })
+    
+    .state('tab.items', {
+      url: '/items',
+      views: {
+        'tab-items': {
+          templateUrl: 'templates/tab-friends.html',
+          controller: 'FriendsCtrl'
+        }
+      }
+    })
+    .state('tab.items-detail', {
+      url: '/friend/:friendId',
+      views: {
+        'tab-items': {
+          templateUrl: 'templates/friend-detail.html',
+          controller: 'FriendDetailCtrl'
+        }
+      }
+    })
+    
 
     .state('tab.account', {
       url: '/account',
@@ -132,7 +152,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/member');
+  $urlRouterProvider.otherwise('/tab/members');
 
   localStorageServiceProvider
     .setPrefix('ef-crm-app')
@@ -147,6 +167,13 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   
   return function (key) {
     return dictionary[key];
+  }
+})
+
+.filter("dateFormat", function () {
+  return function (date, format) {
+    format = format || 'YYYY-MM-DD hh:mm:ss'
+    return moment.unix(date).format(format)
   }
 })
 

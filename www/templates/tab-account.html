@@ -23,7 +23,7 @@
       <div class="item">
         入职时间
         <span class="item-note positive">
-          {{dateFormat(currentEmploye.createdAt)}}
+          {{currentEmploye.createdAt | dateFormat: "YYYY-MM-DD" }}
         </span>
       </div>
 

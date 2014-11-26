@@ -1,4 +1,4 @@
-<ion-view title="会员" ng-init="init()">
+<ion-view title="所有会员" ng-init="init()">
   <ion-nav-buttons side="right">
     <button class="button button-icon icon ion-ios7-plus-empty" ng-click="addNew()"></button>
   </ion-nav-buttons>
@@ -7,21 +7,24 @@
   
     <ion-refresher pulling-text="下拉刷新..." on-refresh="fetch()"></ion-refresher>
     
+    <label class="item item-input">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="text" placeholder="搜索">
+    </label>
+    
     <ion-list>
-      <div ng-repeat="entity in entities">
-        {{entity.name}}
-        <!-- <div class="item item-divider">{{entity}}</div>
-        <ion-item class="item-icon-left item-icon-right" ng-repeat="row in sections[entity]" type="item-text-wrap" href="#/tab/task/{{row.id}}">
-          <i class="icon ion-flask"></i>
-          <b>
-            {{row.project.name}} {{row.created | date: "HH:mm"}}
-          </b>
-          <span class="item-note positive">
-            {{row.status}}
-          </span>
-          <i class="icon ion-ios7-arrow-right"></i>
-        </ion-item> -->
-      </div>
+      <ion-item class="item-icon-left item-icon-right" ng-repeat="entity in entities" type="item-text-wrap" href="#/tab/task/{{row.id}}">
+        <i class="icon ion-flask"></i>
+        <b>
+          {{entity.name}} 
+        </b>
+        {{entity.createdAt | dateFormat: "YYYY-MM-DD" }}
+        <span class="item-note positive">
+          {{entity.phone}}
+        </span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </ion-item>
+      
     </ion-list>
     
   </ion-content>
