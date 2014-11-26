@@ -1,9 +1,97 @@
 angular.module('starter.controllers', ['baseController'])
 
-.controller('MemberCtrl', function($scope, $controller, Member) {
+.controller('MemberCtrl', function($scope, $controller, Member, $ionicModal, $state) {
   $controller('ListCtrl', {$scope: $scope})
   $scope.resource = Member
   $scope.search.orFields = ['name', 'phone']
+  
+  $scope.$watch('search.text', function (newValue, oldValue) {
+    $scope.fetch()
+  })
+  
+  $ionicModal.fromTemplateUrl('member-add-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+    $scope.entity = {}
+  })
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+  $scope.closeModal = function() {
+    $scope.modal.hide()
+  }
+  $scope.tryCreate = function () {
+    $scope.entity.merchantID = $scope.currentEmploye.merchant.id
+    Member.create($scope.entity, function (member) {
+      $scope.modal.hide()
+      $scope.fetch()
+    }, function (res) {
+      console.log('create member faulure', res)
+    })
+  }
+  $scope.blurCb = function ($event) {
+    $scope.entity.code = $scope.entity.code || $scope.entity.phone
+  }
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove()
+  })
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  })
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  })
+  
+  $scope.goDetail = function (entity) {
+    $state.go('tab.members-detail', {member:JSON.stringify(entity)}, {location: true})
+  }
+})
+
+.controller('MemberDetailCtrl', function($scope, $stateParams, Member, Point, $ionicPopup, $ionicModal) {
+  $scope.entity = JSON.parse($stateParams.member)
+
+  $scope.calculatePointPopup = function () {
+    $scope.data = {point:0, reason:'手动累积'}
+
+    $ionicPopup.show({
+      templateUrl: 'member-point-popup.html',
+      title: '累积积分',
+      subTitle: '请输入你需要累计或兑换礼品的积分数量',
+      scope: $scope,
+      buttons: [
+        { text: '取消' },
+        {
+          text: '<b>确定</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if ($scope.data.point === 0) {
+              e.preventDefault();
+            } else {
+              if($scope.data.reason !== '手动累积') $scope.data.point = 0-$scope.data.point
+              return $scope.data;
+            }
+          }
+        },
+      ]
+    }).then(function(res) {
+      Point.create({
+        point: res.point,
+        memberID: $scope.entity.id,
+        agentID: $scope.currentUser.employeID,
+        reason: res.reason
+      }, function (point) {
+        $scope.entity.postPoint = point.postPoint
+        $scope.entity.postTotalPoint = point.postTotalPoint
+      }, function (res) {
+        $scope.alerts.push({type: 'danger', msg: '积分操作失败'})
+      })
+    })
+  }
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {

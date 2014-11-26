@@ -31,7 +31,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
     if (!accessToken.user.employeID) {
       $state.go('register', {}, {location: false})
     } else {
-      $state.go('tab.member');
+      $state.go('tab.members');
     }
   });
 
@@ -53,10 +53,6 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
         console.log('Find employe error')
       })
     }
-  }
-  
-  $rootScope.dateFormat = function (date) {
-    return moment.unix(date).format('YYYY-MM-DD hh:mm:ss')
   }
   
 })
@@ -98,6 +94,15 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
         'tab-members': {
           templateUrl: 'templates/tab-member.html',
           controller: 'MemberCtrl'
+        }
+      }
+    })
+    .state('tab.members-detail', {
+      url: '/members/?member',
+      views: {
+        'tab-members': {
+          templateUrl: 'templates/member-detail.html',
+          controller: 'MemberDetailCtrl'
         }
       }
     })
