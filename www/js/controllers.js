@@ -178,12 +178,19 @@ angular.module('starter.controllers', ['baseController'])
   $scope.includes = ['agent']
 })
 
-.controller('FriendsCtrl', function($scope, Friends) {
-  $scope.friends = Friends.all();
+.controller('BillDetailCtrl', function($scope, $stateParams, Bill) {
+  var entity = JSON.parse($stateParams.bill)
+  $scope.entity = entity
 })
 
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
-  $scope.friend = Friends.get($stateParams.friendId);
+.controller('ItemCtrl', function($scope, $controller, Item) {
+  $controller('ListCtrl', {$scope: $scope})
+  $scope.resource = Item
+})
+
+.controller('ItemDetailCtrl', function($scope, $stateParams, Item) {
+  var entity = JSON.parse($stateParams.item)
+  $scope.entity = entity
 })
 
 .controller('AccountCtrl', function($scope, $state, User, Employe) {

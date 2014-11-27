@@ -126,11 +126,11 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       }
     })
     .state('tab.bills-detail', {
-      url: '/friend/:friendId',
+      url: '/bills/?bill',
       views: {
         'tab-bills': {
-          templateUrl: 'templates/friend-detail.html',
-          controller: 'FriendDetailCtrl'
+          templateUrl: 'templates/bill-detail.html',
+          controller: 'BillDetailCtrl'
         }
       }
     })
@@ -139,8 +139,8 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       url: '/items',
       views: {
         'tab-items': {
-          templateUrl: 'templates/tab-friends.html',
-          controller: 'FriendsCtrl'
+          templateUrl: 'templates/tab-item.html',
+          controller: 'ItemCtrl'
         }
       }
     })
@@ -148,8 +148,8 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       url: '/friend/:friendId',
       views: {
         'tab-items': {
-          templateUrl: 'templates/friend-detail.html',
-          controller: 'FriendDetailCtrl'
+          templateUrl: 'templates/item-detail.html',
+          controller: 'ItemDetailCtrl'
         }
       }
     })
