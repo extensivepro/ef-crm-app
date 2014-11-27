@@ -14,10 +14,10 @@
         </p>
       </div>
 
-      <a class="item item-icon-right">
+      <a class="item item-icon-right" ng-click="operatePrepayPopup()">
         储值余额
         <span class="positive padding">
-          {{entity.account.balance}}
+          {{entity.account.balance/100 | currency: '￥'}}
         </span>
         <i class="icon ion-ios7-plus-outline positive"></i>
       </a>
@@ -67,4 +67,13 @@
     </label>
     <ion-radio ng-model="data.reason" ng-value="'手动累积'">手动累积</ion-radio>
     <ion-radio ng-model="data.reason" ng-value="'手动兑换积分'">手动兑换积分</ion-radio>
+</script>
+
+<script id="member-prepay-popup.html" type="text/ng-template">
+    <label class="item item-input">
+      <input type="text" ng-model="prepayData.amount">
+    </label>
+    <ion-radio ng-model="prepayData.dealType" ng-value="'prepay'">充值</ion-radio>
+    <ion-radio ng-model="prepayData.dealType" ng-value="'withdraw'">提现</ion-radio>
+    <ion-radio ng-model="prepayData.dealType" ng-value="'writedown'">冲减</ion-radio>
 </script>

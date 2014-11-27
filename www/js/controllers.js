@@ -52,16 +52,17 @@ angular.module('starter.controllers', ['baseController'])
   }
 })
 
-.controller('MemberDetailCtrl', function($scope, $stateParams, Member, Point, $ionicPopup, $ionicModal) {
-  $scope.entity = JSON.parse($stateParams.member)
+.controller('MemberDetailCtrl', function($scope, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal) {
+  var entity = JSON.parse($stateParams.member)
+  $scope.entity = entity
 
   $scope.calculatePointPopup = function () {
     $scope.data = {point:0, reason:'手动累积'}
 
     $ionicPopup.show({
       templateUrl: 'member-point-popup.html',
-      title: '累积积分',
-      subTitle: '请输入你需要累计或兑换礼品的积分数量',
+      title: '积分管理',
+      subTitle: '请输入你需要累积或兑换礼品的积分数量',
       scope: $scope,
       buttons: [
         { text: '取消' },
@@ -94,6 +95,72 @@ angular.module('starter.controllers', ['baseController'])
     })
   }
   
+  $scope.operatePrepayPopup = function () {
+    $scope.prepayData = {amount:0, dealType:'prepay'}
+
+    $ionicPopup.show({
+      templateUrl: 'member-prepay-popup.html',
+      title: '储值管理',
+      subTitle: '请输入你需要预存或提现的金额',
+      scope: $scope,
+      buttons: [
+        { text: '取消' },
+        {
+          text: '<b>确定</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if ($scope.prepayData.amount === 0) {
+              e.preventDefault();
+            } else {
+              return $scope.prepayData;
+            }
+          }
+        },
+      ]
+    }).then(function(res) {
+      if(!res) return;
+      var amount = res.amount*100
+      var now = Math.floor(Date.now()/1000)
+      var opt = {
+        dealType: res.dealType,
+        amount: amount,
+        billNumber: now,
+        shopID: $scope.currentEmploye.shopID,
+        merchantID: $scope.currentEmploye.merchantID,
+        agentID: $scope.currentUser.employeID,
+        cashSettlement: {
+          "status": 'closed',
+          serialNumber: now,
+          amount: amount,
+          settledAt: now,
+          payType: 'cash'
+        },
+        memberSettlement: {
+          "status": 'closed',
+          serialNumber: now,
+          amount: amount,
+          settledAt: now,
+          payType: 'perpay'
+        }
+      }
+    
+      var accountType = res.dealType === 'prepay' ? 'payeeAccount': 'payerAccount'
+      opt.memberSettlement[accountType] = {
+        id: entity.account.id,
+        "name": entity.account.name,
+        balance: entity.account.balance
+      }
+      Bill.create(opt, function (bill) {
+        if(accountType === "payeeAccount") {
+          entity.account.balance += amount 
+        } else {
+          entity.account.balance -= amount 
+        }
+      }, function (res) {
+        $scope.alerts.push({type: 'danger', msg: '储值操作失败'})
+      })
+    })
+  }
 })
 
 .controller('MemberPointCtrl', function($scope, $controller, $stateParams, Point) {
