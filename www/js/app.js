@@ -120,8 +120,8 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       url: '/bills',
       views: {
         'tab-bills': {
-          templateUrl: 'templates/tab-friends.html',
-          controller: 'FriendsCtrl'
+          templateUrl: 'templates/tab-bill.html',
+          controller: 'BillCtrl'
         }
       }
     })
@@ -191,4 +191,28 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   }
 })
 
+.filter("dealTypeDictionary", function () {
+  var dictionary = {
+    "deal": "消费",
+    "return": "退货退款",
+    "withdraw": "提现",
+    "writedown": "冲减",
+    "prepay": "充值"
+  }
+  return function (key) {
+    return dictionary[key] || '其他'
+  }
+})
+
+.filter("billOwner", function () {
+  return function (settlement) {
+    var owner = '走入客户'
+    if(settlement && settlement.payeeAccount) {
+      owner = settlement.payeeAccount.name
+    } else if(settlement && settlement.payerAccount) {
+      owner = settlement.payerAccount.name
+    }
+    return owner
+  }
+})
 

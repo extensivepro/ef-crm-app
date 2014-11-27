@@ -172,6 +172,12 @@ angular.module('starter.controllers', ['baseController'])
 
 })
 
+.controller('BillCtrl', function($scope, $controller, Bill) {
+  $controller('ListCtrl', {$scope: $scope})
+  $scope.resource = Bill
+  $scope.includes = ['agent']
+})
+
 .controller('FriendsCtrl', function($scope, Friends) {
   $scope.friends = Friends.all();
 })

@@ -13,8 +13,7 @@
     </label>
     
     <ion-list>
-      <ion-item class="item-icon-left item-icon-right" ng-repeat="entity in entities" type="item-text-wrap" href="#/tab/members/?member={{entity}}">
-        <i class="icon ion-ios7-person-outline"></i>
+      <ion-item class="item-icon-right" ng-repeat="entity in entities" type="item-text-wrap" href="#/tab/members/?member={{entity}}">
         <b>{{entity.name}}</b>
         <span class="item-note positive">
           {{entity.phone}}
