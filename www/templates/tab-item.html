@@ -3,7 +3,7 @@
     <button class="button button-icon icon ion-ios7-plus-empty" ng-click="openModal()"></button>
   </ion-nav-buttons>
 
-  <ion-content class="padding">
+  <ion-content>
   
     <ion-refresher pulling-text="下拉刷新..." on-refresh="fetch()"></ion-refresher>
     
@@ -12,16 +12,17 @@
       <input type="text" placeholder="搜索" ng-model="search.text">
     </label>
     
-    <ion-list>
-      <ion-item class="item-icon-right" ng-repeat="entity in entities" type="item-text-wrap" href="#/tab/items/?item={{entity}}">
+    <div class="list">
+      <div class="item item-button-right" ng-repeat="entity in entities">
         <b>{{entity.name}}</b>
         <span class="item-note positive">
           {{entity.price/100 | currency: '￥' }}
         </span>
-        <i class="icon ion-ios7-information-outline positive"></i>
-      </ion-item>
-      
-    </ion-list>
-    
+        <a class="button button-clear button-positive" ng-click="showDetail(entity)">
+          <i class="icon ion-ios7-information-outline"></i>
+        </a>
+      </div>      
+    </div>
+
   </ion-content>
 </ion-view>

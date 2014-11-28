@@ -1,9 +1,10 @@
 angular.module('starter.controllers', ['baseController'])
 
-.controller('MemberCtrl', function($scope, $controller, Member, $ionicModal, $state) {
+.controller('MemberCtrl', function($scope, $controller, Member, $ionicModal) {
   $controller('ListCtrl', {$scope: $scope})
   $scope.resource = Member
   $scope.search.orFields = ['name', 'phone']
+  $scope.detailState = 'tab.members-detail'
   
   $scope.$watch('search.text', function (newValue, oldValue) {
     $scope.fetch()
@@ -46,15 +47,10 @@ angular.module('starter.controllers', ['baseController'])
   $scope.$on('modal.removed', function() {
     // Execute action
   })
-  
-  $scope.goDetail = function (entity) {
-    $state.go('tab.members-detail', {member:JSON.stringify(entity)}, {location: true})
-  }
 })
 
-.controller('MemberDetailCtrl', function($scope, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal) {
-  var entity = JSON.parse($stateParams.member)
-  $scope.entity = entity
+.controller('MemberDetailCtrl', function($scope, $controller, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal) {
+  $controller('ListDetailCtrl', {$scope: $scope})
 
   $scope.calculatePointPopup = function () {
     $scope.data = {point:0, reason:'手动累积'}
@@ -146,15 +142,15 @@ angular.module('starter.controllers', ['baseController'])
     
       var accountType = res.dealType === 'prepay' ? 'payeeAccount': 'payerAccount'
       opt.memberSettlement[accountType] = {
-        id: entity.account.id,
-        "name": entity.account.name,
-        balance: entity.account.balance
+        id: $scope.entity.account.id,
+        "name": $scope.entity.account.name,
+        balance: $scope.entity.account.balance
       }
       Bill.create(opt, function (bill) {
         if(accountType === "payeeAccount") {
-          entity.account.balance += amount 
+          $scope.entity.account.balance += amount 
         } else {
-          entity.account.balance -= amount 
+          $scope.entity.account.balance -= amount 
         }
       }, function (res) {
         $scope.alerts.push({type: 'danger', msg: '储值操作失败'})
@@ -176,21 +172,21 @@ angular.module('starter.controllers', ['baseController'])
   $controller('ListCtrl', {$scope: $scope})
   $scope.resource = Bill
   $scope.includes = ['agent']
+  $scope.detailState = 'tab.bills-detail'
 })
 
-.controller('BillDetailCtrl', function($scope, $stateParams, Bill) {
-  var entity = JSON.parse($stateParams.bill)
-  $scope.entity = entity
+.controller('BillDetailCtrl', function($scope, $controller, $stateParams, Bill) {
+  $controller('ListDetailCtrl', {$scope: $scope})
 })
 
 .controller('ItemCtrl', function($scope, $controller, Item) {
   $controller('ListCtrl', {$scope: $scope})
   $scope.resource = Item
+  $scope.detailState = 'tab.items-detail'
 })
 
-.controller('ItemDetailCtrl', function($scope, $stateParams, Item) {
-  var entity = JSON.parse($stateParams.item)
-  $scope.entity = entity
+.controller('ItemDetailCtrl', function($scope, $controller, $stateParams, Item) {
+  $controller('ListDetailCtrl', {$scope: $scope})
 })
 
 .controller('AccountCtrl', function($scope, $state, User, Employe) {

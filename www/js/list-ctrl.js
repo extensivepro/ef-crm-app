@@ -3,7 +3,7 @@
  */
 angular.module('baseController', [])
 
-.controller('ListCtrl', function ListCtrl($scope) {
+.controller('ListCtrl', function ListCtrl($scope, $state) {
   $scope.entities = []
   $scope.resource = undefined
   $scope.orderOptions = ['createdAt DESC']
@@ -12,6 +12,7 @@ angular.module('baseController', [])
     orFields: ['name', 'phone'],
   }
   $scope.includes = []
+  $scope.detailState = undefined
 
   $scope.fetch = function () {
     var filter = { 
@@ -42,14 +43,15 @@ angular.module('baseController', [])
   }
   
   $scope.showDetail = function (entity) {
-    console.log(entity)
-  }
-  
-  $scope.dateFormat = function (date) {
-    return moment.unix(date).format('YYYY-MM-DD hh:mm:ss')
+    $state.go($scope.detailState, {entity:JSON.stringify(entity)}, {location: true})
   }
   
   $scope.init = function() {
     $scope.fetch()
   }
+})
+
+.controller('ListDetailCtrl', function ListCtrl($scope, $stateParams) {
+  $scope.entity = JSON.parse($stateParams.entity)
+  
 })

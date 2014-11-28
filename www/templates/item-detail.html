@@ -4,7 +4,60 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view title="{{friend.name}}">
+<ion-view title="{{entity.name}}">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-positive" ng-click="openModal()">记账</button>
+  </ion-nav-buttons>
+
   <ion-content has-header="true" padding="true">
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img src="img/tag.png">
+        <h2>{{entity.name}}</h2>
+        <p>
+          {{entity.lastStatusModifiedAt | dateFormat : 'YYYY-MM-DD'}} <span class="positive">{{entity.status | statusDictionary}}</span>
+        </p>
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon ion-ios7-barcode-outline padding"></i>
+        <span class="padding">
+        编号
+        </span>
+        <span class="item-note positive">
+          {{entity.code}}
+        </span>
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-divider">
+        价格
+      </div>
+      <div class="item">
+        零售价
+        <span class="positive padding">
+          {{entity.price/100 | currency: '￥'}}
+        </span>
+      </div>
+
+      <div class="item" ng-click="calculatePointPopup()">
+        会员价
+        <span class="positive padding">
+          {{entity.price/100 | currency: '￥'}}
+        </span>
+      </div>
+
+    </div>
+    
+    <div class="list card">
+      <div class="item item-divider">
+        商品说明
+      </div>
+      <div class="item">
+        {{entity.desc}}
+      </div>
+    </div>
+    
   </ion-content>
 </ion-view>

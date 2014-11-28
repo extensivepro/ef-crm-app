@@ -1,10 +1,59 @@
-<!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
--->
-<ion-view title="{{friend.name}}">
+<ion-view title="流水记录详情">
   <ion-content has-header="true" padding="true">
+    <div class="list card">
+
+      <div class="item item-icon-left">
+        <i class="icon" ng-class="entity.dealType === 'prepay'?'ion-ios7-plus-outline assertive': 'ion-ios7-minus-outline balanced'"></i>
+        <span class="item-note positive">
+          {{entity.memberSettlement | billOwner}}
+        </span>
+        <h2>
+          {{entity.dealType | dealTypeDictionary}}<span class="positive padding">{{entity.amount/100 | currency: '￥' }}</span>
+        </h2>
+        <span class="">
+          折扣<span class="balanced padding">{{entity.discountAmount/100 | currency: '￥'}}</span>
+        </span>
+        <span class="item-note positive">
+          {{entity.createdAt | dateFormat: 'YYYY/MM/DD HH:mm'}}
+        </span>
+      </div>
+      
+      <div class="item">
+        账单号
+        <span class="positive item-note">
+          {{entity.billNumber}}
+        </span>
+      </div>
+
+      <div class="item">
+        经手
+        <span class="positive item-note">
+          {{entity.agent.name}}
+        </span>
+      </div>
+      
+    </div>
+
+    <div class="list card">
+      <div class="item item-divider">
+        结算方式
+      </div>
+      <div class="item" ng-if="!!entity.cashSettlement">
+        现金
+        <span class="item-note positive">
+          {{entity.cashSettlement.amount/100 | currency: '￥'}}
+        </span>
+      </div>
+
+      <div class="item" ng-if="!!entity.memberSettlement">
+        <span class="positive" ng-if="!!entity.memberSettlement.payeeAccount">{{entity.memberSettlement.payeeAccount.name}}</span>
+        储值余额
+        <span class="item-note positive">
+          {{entity.memberSettlement.amount/100 | currency: '￥'}}
+        </span>
+      </div>
+
+    </div>
+        
   </ion-content>
 </ion-view>

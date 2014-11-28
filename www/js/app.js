@@ -98,7 +98,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       }
     })
     .state('tab.members-detail', {
-      url: '/members/?member',
+      url: '/members/?entity',
       views: {
         'tab-members': {
           templateUrl: 'templates/member-detail.html',
@@ -126,7 +126,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       }
     })
     .state('tab.bills-detail', {
-      url: '/bills/?bill',
+      url: '/bills/?entity',
       views: {
         'tab-bills': {
           templateUrl: 'templates/bill-detail.html',
@@ -145,7 +145,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
       }
     })
     .state('tab.items-detail', {
-      url: '/friend/:friendId',
+      url: '/items/?entity',
       views: {
         'tab-items': {
           templateUrl: 'templates/item-detail.html',
@@ -216,3 +216,13 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   }
 })
 
+.filter("statusDictionary", function () {
+  var dictionary = {
+    "sale": "上架",
+    "desale": "下架",
+    "removed": "已删除"
+  }
+  return function (key) {
+    return dictionary[key] || '其他'
+  }
+})

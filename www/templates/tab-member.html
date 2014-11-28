@@ -3,7 +3,7 @@
     <button class="button button-icon icon ion-ios7-plus-empty" ng-click="openModal()"></button>
   </ion-nav-buttons>
 
-  <ion-content class="padding">
+  <ion-content>
   
     <ion-refresher pulling-text="下拉刷新..." on-refresh="fetch()"></ion-refresher>
     
@@ -13,7 +13,7 @@
     </label>
     
     <ion-list>
-      <ion-item class="item-icon-right" ng-repeat="entity in entities" type="item-text-wrap" href="#/tab/members/?member={{entity}}">
+      <ion-item class="item-icon-right" ng-repeat="entity in entities" ng-click="showDetail(entity)">
         <b>{{entity.name}}</b>
         <span class="item-note positive">
           {{entity.phone}}
@@ -31,7 +31,7 @@
     <ion-header-bar>
       <button class="button button-clear button-positive" ng-click="closeModal()">关闭</button>
       <h1 class="title">新增会员</h1>
-      <button class="button button-clear button-positive" ng-click="tryCreate()"ng-class="{'disabled':!entity.name}">完成</button>
+      <button class="button button-clear button-positive" ng-click="tryCreate()" ng-class="{'disabled':!entity.name}">完成</button>
     </ion-header-bar>
     <ion-content>
       <div class="list">
