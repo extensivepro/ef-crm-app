@@ -10,7 +10,7 @@ angular.module('starter.controllers', ['baseController'])
     $scope.fetch()
   })
   
-  $ionicModal.fromTemplateUrl('member-add-modal.html', {
+  $ionicModal.fromTemplateUrl('/templates/member-profile-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -23,13 +23,13 @@ angular.module('starter.controllers', ['baseController'])
   $scope.closeModal = function() {
     $scope.modal.hide()
   }
-  $scope.tryCreate = function () {
+  $scope.trySave = function () {
     $scope.entity.merchantID = $scope.currentEmploye.merchant.id
     Member.create($scope.entity, function (member) {
       $scope.modal.hide()
       $scope.fetch()
     }, function (res) {
-      console.log('create member faulure', res)
+      console.log('create member failure', res)
     })
   }
   $scope.blurCb = function ($event) {
@@ -51,6 +51,42 @@ angular.module('starter.controllers', ['baseController'])
 
 .controller('MemberDetailCtrl', function($scope, $controller, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal) {
   $controller('ListDetailCtrl', {$scope: $scope})
+
+  $ionicModal.fromTemplateUrl('/templates/member-profile-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+  $scope.closeModal = function() {
+    $scope.modal.hide()
+  }
+  $scope.trySave = function () {
+    Member.update({where:{id: $scope.entity.id}}, $scope.entity, function (member) {
+      $scope.modal.hide()
+    }, function (res) {
+      console.log('create member failure', res)
+    })
+  }
+
+  $scope.blurCb = function ($event) {
+    $scope.entity.code = $scope.entity.code || $scope.entity.phone
+  }
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove()
+  })
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  })
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  })
 
   $scope.calculatePointPopup = function () {
     $scope.data = {point:0, reason:'手动累积'}

@@ -66,7 +66,6 @@ angular.module('baseController', [])
     $state.go($scope.detailState, {entity:JSON.stringify(entity)}, {location: true})
   }
   
-  
   $scope.init = function() {
     $scope.fetch()
   }
