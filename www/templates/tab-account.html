@@ -4,27 +4,31 @@
 
       <div class="item item-avatar">
         <img src="img/avatar.png">
-        <h2>{{currentEmploye.name}} {{currentEmploye.role | roleDictionary}}</h2>
-        <p>
+        <span class="item-note">
           工号 {{currentEmploye.jobNumber}}
-        </p>
+        </span>
+        <h2>
+          <span class="positive">{{currentEmploye.name}}</span> 
+        </h2>
+        <small class="">
+          {{currentEmploye.shop.name}} {{currentEmploye.role | roleDictionary}}
+        </small>
+        <span class="item-note">
+          {{currentEmploye.merchant.name}} 
+        </span>
       </div>
 
-      <a class="item item-icon-right">
+      <div class="item item-button-right">
         身份证 
         <span class="item-note positive">
           {{currentEmploye.idcard}}
         </span>
-        <span class="item-note positive">
+        <button class="button button-clear button-positive">
           修改
-        </span>
-        <i class="icon ion-ios7-arrow-right"></i>
-      </a>
-      <div class="item">
-        入职时间
-        <span class="item-note positive">
-          {{currentEmploye.createdAt | dateFormat: "YYYY-MM-DD" }}
-        </span>
+        </button>
+      </div>
+      <div class="item item-divider text-center">
+        入职于 {{currentEmploye.createdAt | dateFormat: "YYYY-MM-DD" }}
       </div>
 
     </div>
@@ -33,21 +37,31 @@
       <div class="item item-divider">
         联系方式
       </div>
-      <a class="item item-icon-left item-icon-right">
-        <i class="icon ion-ios7-telephone"></i>
+      <div class="item item-icon-left item-button-right">
+        <i class="icon ion-ios7-telephone-outline"></i>
         {{currentEmploye.phone}}
-        <span class="item-note positive">
+        <button class="button button-clear button-positive">
           修改
-        </span>
-        <i class="icon ion-ios7-arrow-right"></i>
-      </a>
+        </button>
+      </div>
     </div>
     
-    <div class="card">
-      <a ng-click="logout()" class="button button-full button-assertive">
-        退出
-      </a>
+    <div class="list card">
+      <div class="item item-divider">
+        设置
+      </div>
+      <div class="item item-icon-left item-button-right">
+        <i class="icon ion-ios7-locked-outline"></i>修改密码
+        <button class="button button-clear button-positive">
+          修改
+        </button>
+      </div>
     </div>
+
+    <hr />
+    <a ng-click="logout()" class="button button-full button-assertive">
+      退出
+    </a>    
 
   </ion-content>
 
