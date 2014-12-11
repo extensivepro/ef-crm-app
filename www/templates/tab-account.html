@@ -52,7 +52,7 @@
       </div>
       <div class="item item-icon-left item-button-right">
         <i class="icon ion-ios7-locked-outline"></i>修改密码
-        <button class="button button-clear button-positive">
+        <button class="button button-clear button-positive" ng-click="changePassword()">
           修改
         </button>
       </div>
@@ -66,3 +66,17 @@
   </ion-content>
 
 </ion-view>
+
+
+<script id="change-password-popup.html" type="text/ng-template">
+  <label class="item item-input">
+    <input type="text" ng-model="inputData.password">
+  </label>
+  <label class="item item-input">
+    <input type="text" ng-model="inputData.password2">
+  </label>
+	
+  <div class="col-xs-12" data-ng-show="!!alert">
+    <alert type="danger">{{alert}}</alert>
+  </div>
+</script>

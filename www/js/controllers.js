@@ -225,11 +225,52 @@ angular.module('starter.controllers', ['baseController'])
   $controller('ListDetailCtrl', {$scope: $scope})
 })
 
-.controller('AccountCtrl', function($scope, $state, User, Employe) {
+.controller('AccountCtrl', function($scope, $state, User, Employe, $ionicPopup) {
   
   $scope.logout = function () {
     User.logout(function () {
       $state.go('login')
+    })
+  }
+
+  $scope.changePassword = function () {
+    $scope.inputData = {password:'', password2:''}
+		$scope.alert = undefined
+
+    $ionicPopup.show({
+      templateUrl: 'change-password-popup.html',
+      title: '修改密码',
+      subTitle: '请输入6位新密码',
+      scope: $scope,
+      buttons: [
+        { text: '取消' },
+        {
+          text: '<b>确定</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if ($scope.inputData.password.length < 6) {
+							$scope.alert = '密码不能少于6位'
+              e.preventDefault()
+						} else if ($scope.inputData.password !== $scope.inputData.password2) {
+							console.log($scope.inputData)
+							$scope.alert = '两次输入的密码不一致'
+              e.preventDefault()
+            } else {
+              return $scope.inputData;
+            }
+          }
+        },
+      ]
+    }).then(function(res) {
+      if(!res) return
+			
+	    User.upsert({
+	      id: $scope.currentUser.id,
+	      password: res.password
+	    }, function (user) {
+	    }, function (res) {
+	      $scope.alerts.push({type: 'danger', msg: '更新用户密码失败'})      
+	    })
     })
   }
 

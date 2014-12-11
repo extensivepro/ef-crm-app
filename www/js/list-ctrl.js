@@ -63,6 +63,7 @@ angular.module('baseController', [])
     $scope.pageNumber++
     fetch(function (results) {
       $scope.entities = $scope.entities.concat(results)
+      moreData = results.length === $scope.limit
       $scope.$broadcast('scroll.infiniteScrollComplete')
     }, function (res) {
       console.log('LoadMore ', $scope.resource, res)
