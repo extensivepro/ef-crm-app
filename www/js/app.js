@@ -226,3 +226,5 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
     return dictionary[key] || '其他'
   }
 })
+
+var controllers = angular.module('starter.controllers', ['baseController'])

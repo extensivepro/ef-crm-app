@@ -1,11 +1,52 @@
 /**
  * List Controller
  */
+
+var configProfileModal = function ($scope, $ionicModal) {
+  if($scope.profileModal) {
+    $ionicModal.fromTemplateUrl($scope.profileModal, {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal
+      $scope.entity = $scope.entity || {}
+    })
+    $scope.openModal = function() {
+      $scope.modal.show()
+    }
+    $scope.closeModal = function() {
+      $scope.modal.hide()
+    }
+    
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove()
+    })
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+      // Execute action
+    })
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+      // Execute action
+    })
+
+    $scope.trySave = function () {
+      $scope.entity.merchantID = $scope.currentEmploye.merchant.id
+      $scope.resource.upsert($scope.entity, function (entity) {
+        $scope.$emit('RESOURCE_UPSERT')
+        $scope.modal.hide()
+      }, function (res) {
+        console.log('create entity failure', res)
+      })
+    }
+  }
+}
+
 angular.module('baseController', [])
 
-.controller('ListCtrl', function ListCtrl($scope, $state) {
+.controller('ListCtrl', function ListCtrl($scope, $state, $ionicModal) {
   $scope.entities = []
-  $scope.resource = undefined
   $scope.orderOptions = ['createdAt DESC']
   $scope.search = {
     text: '',
@@ -54,6 +95,10 @@ angular.module('baseController', [])
       $scope.$broadcast('scroll.refreshComplete')
     })
   }
+  
+  $scope.$on('RESOURCE_UPSERT', function () {
+    $scope.fetch()
+  })
 
 	$scope.moreDataCanBeLoaded = function () {
 		return moreData
@@ -74,13 +119,17 @@ angular.module('baseController', [])
   $scope.showDetail = function (entity) {
     $state.go($scope.detailState, {entity:JSON.stringify(entity)}, {location: true})
   }
+
+  configProfileModal($scope, $ionicModal)
   
   $scope.init = function() {
     $scope.fetch()
   }
 })
 
-.controller('ListDetailCtrl', function ListCtrl($scope, $stateParams) {
+.controller('ListDetailCtrl', function ListCtrl($scope, $stateParams, $ionicModal) {
   $scope.entity = JSON.parse($stateParams.entity)
+
+  configProfileModal($scope, $ionicModal)
   
 })

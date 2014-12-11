@@ -9,9 +9,12 @@
       <div class="item item-avatar" ng-click="openModal()">
         <img src="img/avatar.png">
         <h2>{{entity.name}}</h2>
-        <p>
-          等级 {{entity.level}}
-        </p>
+        <small>
+          等级 <span class="positive"> {{entity.level}}</span>
+        </small>
+        
+        <span class="item-note positive">修改</span>
+        
       </div>
 
       <a class="item item-icon-right" ng-click="operatePrepayPopup()">

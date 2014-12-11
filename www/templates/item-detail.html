@@ -6,12 +6,15 @@
   <ion-content has-header="true" padding="true">
     <div class="list card">
 
-      <div class="item item-avatar">
+      <div class="item item-avatar" ng-click="openModal()">
         <img src="img/tag.png">
         <h2>{{entity.name}}</h2>
-        <p>
+        <small>
           {{entity.lastStatusModifiedAt | dateFormat : 'YYYY-MM-DD'}} <span class="positive">{{entity.status | statusDictionary}}</span>
-        </p>
+        </small>
+        
+        <span class="item-note positive">修改</span>
+        
       </div>
       <div class="item item-icon-left">
         <i class="icon ion-ios7-barcode-outline padding"></i>
