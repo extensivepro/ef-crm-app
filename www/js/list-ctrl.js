@@ -14,12 +14,13 @@ angular.module('baseController', [])
   $scope.includes = []
   $scope.detailState = undefined
   $scope.pageNumber = 0
+	$scope.limit = 20
 
   var fetch = function (successCb, errorCb) {
     var filter = { 
       order: $scope.orderOptions,
-      skip: $scope.pageNumber*20,
-      limit: 20
+      skip: $scope.pageNumber*$scope.limit,
+      limit: $scope.limit
     }
     if($scope.search.text !== '' && $scope.search.orFields.length > 0) {
       var ors = []
@@ -40,24 +41,31 @@ angular.module('baseController', [])
     $scope.resource.query({filter: filter}, successCb, errorCb)
   }
 
+	var moreData = true
+	
   $scope.fetch = function () {
     $scope.pageNumber = 0
     fetch(function (results) {
       $scope.entities = results
+			moreData = results.length === $scope.limit
       $scope.$broadcast('scroll.refreshComplete')
     }, function (error) {
       console.log('Query', $scope.resource, error)
       $scope.$broadcast('scroll.refreshComplete')
     })
   }
-  
+
+	$scope.moreDataCanBeLoaded = function () {
+		return moreData
+	}
+	
   $scope.loadMore = function () {
     $scope.pageNumber++
     fetch(function (results) {
       $scope.entities = $scope.entities.concat(results)
       $scope.$broadcast('scroll.infiniteScrollComplete')
-    }, function () {
-      console.log('LoadMore ', $scope.resource, error)
+    }, function (res) {
+      console.log('LoadMore ', $scope.resource, res)
       $scope.$broadcast('scroll.infiniteScrollComplete')
     })
   }
