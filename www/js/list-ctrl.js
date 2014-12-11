@@ -63,6 +63,13 @@ angular.module('baseController', [])
       skip: $scope.pageNumber*$scope.limit,
       limit: $scope.limit
     }
+
+    filter.where = {
+      and: [
+        { merchantID: $scope.currentEmploye.merchantID } 
+      ]
+    }
+
     if($scope.search.text !== '' && $scope.search.orFields.length > 0) {
       var ors = []
       $scope.search.orFields.forEach(function (field) {
@@ -70,7 +77,7 @@ angular.module('baseController', [])
         sk[field] = {like: $scope.search.text}
         ors.push(sk)
       })
-      filter.where = {'or': ors}
+      filter.where.and.push({ or: ors })
     }
     
     if ($scope.includes.length > 0) {
@@ -97,6 +104,10 @@ angular.module('baseController', [])
   }
   
   $scope.$on('RESOURCE_UPSERT', function () {
+    $scope.fetch()
+  })
+  
+  $scope.$watch("search.text", function () {
     $scope.fetch()
   })
 
