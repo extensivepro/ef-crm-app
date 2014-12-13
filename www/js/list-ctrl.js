@@ -84,7 +84,7 @@ angular.module('baseController', [])
       filter.include = $scope.includes
     }
 
-    console.log('Filter:', filter)
+    // console.log('Filter:', filter)
 
     $scope.resource.query({filter: filter}, successCb, errorCb)
   }

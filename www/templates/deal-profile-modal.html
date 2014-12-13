@@ -1,0 +1,44 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button button-clear button-positive" ng-click="closeDealModal()">返回</button>
+    <h1 class="title">{{entity.id? '记账' : '交易详情'}}</h1>
+    <button class="button button-clear button-positive" ng-click="clearDeal()">
+      取消交易
+    </button>
+  </ion-header-bar>
+  <ion-content class="padding">
+    <div class="list card">
+      <div class="item item-avatar">
+        <img src="img/avatar.png">
+        <span class="item-note">
+          会员号 {{deal.buyer.code}}
+        </span>
+        <h2>
+          <span class="positive">{{deal.buyer.name || '走入顾客' }}</span> 
+        </h2>
+      </div>
+    </div>
+    
+    <div class="list card">
+      <div class="item item-divider">购物清单</div>
+      <a class="item" ng-repeat="dealItem in deal.items">
+        <h2>{{dealItem.item.name}}</h2>
+        <small>{{dealItem.dealPrice/100 | currency : '¥'}} X {{dealItem.quantity}}</small>
+        <span class="item-note positive">
+          小计 {{dealItem.dealPrice * dealItem.quantity /100 | currency: '¥'}}
+        </span>
+      </a>
+      <div class="item item-divider">
+        总计：{{deal.quantity}}件
+        <span class="item-note positive">
+          {{deal.fee/100 | currency : '¥'}}
+        </span>
+      </div>
+    </div>
+
+    <a ng-click="tryMakeDeal()" class="button button-full button-assertive"  ng-class=" {'disabled': deal.quantity === 0}">
+      结算
+    </a>    
+
+  </ion-content>
+</ion-modal-view>

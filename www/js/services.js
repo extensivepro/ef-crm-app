@@ -21,3 +21,11 @@ angular.module('starter.services', ['lbServices'])
     }
   }
 })
+
+.factory('MakeDeal', function () {
+  return {
+    make: function () {
+      return true
+    }
+  }
+})

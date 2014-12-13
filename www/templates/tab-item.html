@@ -1,4 +1,7 @@
 <ion-view title="所有商品">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon" ng-class="deal.quantity > 0 ? 'ion-ios7-cart' : 'ion-ios7-cart-outline'" ng-click="openDealModal()">{{deal.quantity}}</button>
+  </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <button class="button button-icon icon ion-ios7-plus-empty" ng-click="openModal()"></button>
   </ion-nav-buttons>
@@ -13,7 +16,7 @@
     </label>
     
     <div class="list">
-      <div class="item item-button-right" ng-repeat="entity in entities">
+      <div class="item item-button-right" ng-repeat="entity in entities" ng-click="registerGood(entity)">
         <b>{{entity.name}}</b>
         <span class="item-note positive">
           {{entity.price/100 | currency: '￥' }}
