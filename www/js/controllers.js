@@ -11,9 +11,10 @@ controllers
   $controller('ListDetailCtrl', {$scope: $scope})
 })
 
-.controller('AccountCtrl', function($scope, $state, User, Employe, $ionicPopup) {
+.controller('AccountCtrl', function($scope, $rootScope, $state, User, Employe, $ionicPopup) {
   
   $scope.logout = function () {
+    $rootScope.currentEmploye = undefined
     User.logout(function () {
       $state.go('login')
     })

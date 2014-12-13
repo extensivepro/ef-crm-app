@@ -8,10 +8,6 @@ controllers
   $scope.search.orFields = ['name', 'phone']
   $scope.detailState = 'tab.members-detail'
   
-  $scope.$watch('search.text', function (newValue, oldValue) {
-    $scope.fetch()
-  })
-  
   $scope.blurCb = function ($event) {
     $scope.entity.code = $scope.entity.code || $scope.entity.phone
   }

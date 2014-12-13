@@ -55,19 +55,19 @@ angular.module('baseController', [])
   $scope.includes = []
   $scope.detailState = undefined
   $scope.pageNumber = 0
-	$scope.limit = 20
+  $scope.limit = 20
 
   var fetch = function (successCb, errorCb) {
+    if(!$scope.currentEmploye) return
     var filter = { 
       order: $scope.orderOptions,
       skip: $scope.pageNumber*$scope.limit,
-      limit: $scope.limit
-    }
-
-    filter.where = {
-      and: [
-        { merchantID: $scope.currentEmploye.merchantID } 
-      ]
+      limit: $scope.limit,
+      where: {
+        and: [
+          { merchantID: $scope.currentEmploye.merchantID } 
+        ]
+      }
     }
 
     if($scope.search.text !== '' && $scope.search.orFields.length > 0) {
@@ -84,12 +84,12 @@ angular.module('baseController', [])
       filter.include = $scope.includes
     }
 
-    // console.log('Filter:', filter, $scope)
+    console.log('Filter:', filter)
 
     $scope.resource.query({filter: filter}, successCb, errorCb)
   }
-
-	var moreData = true
+  
+  var moreData = false
 	
   $scope.fetch = function () {
     $scope.pageNumber = 0
@@ -107,15 +107,19 @@ angular.module('baseController', [])
     $scope.fetch()
   })
   
-  $scope.$watch("search.text", function () {
+  $scope.$watch('search.text', function (newValue, oldValue) {
     $scope.fetch()
   })
-
-	$scope.moreDataCanBeLoaded = function () {
-		return moreData
-	}
+  
+  $scope.$on('CURRENT_EMPLOYE_READY', function () {
+    $scope.fetch()
+  })
+  $scope.moreDataCanBeLoaded = function () {
+    return moreData
+  }
 	
   $scope.loadMore = function () {
+    if(!moreData) return
     $scope.pageNumber++
     fetch(function (results) {
       $scope.entities = $scope.entities.concat(results)

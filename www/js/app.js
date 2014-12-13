@@ -49,6 +49,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
         }
       }, function (employe) {
         $rootScope.currentEmploye = employe
+        $rootScope.$broadcast('CURRENT_EMPLOYE_READY')
       }, function (res) {
         console.log('Find employe error')
       })
