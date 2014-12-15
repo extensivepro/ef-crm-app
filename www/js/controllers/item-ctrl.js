@@ -1,6 +1,6 @@
 controllers
 
-.controller('ItemCtrl', function($scope, $controller, Item, $ionicModal, Deal) {  
+.controller('ItemCtrl', function($scope, $controller, Item, $ionicModal, Deal, CurrentEmploye) {  
   $scope.profileModal = '/templates/item-profile-modal.html'
   
   $controller('ListCtrl', {$scope: $scope})
@@ -31,13 +31,12 @@ controllers
   
   //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
-    console.log('Destroy deal Modal')
     $scope.dealModal.remove()
   })
 
   $scope.tryMakeDeal = function () {
     return console.log($scope.deal)
-    $scope.entity.merchantID = $scope.currentEmploye.merchant.id
+    $scope.entity.merchantID = CurrentEmploye.merchantID
     Deal.create($scope.entity, function (entity) {
       $scope.$emit('DEAL_MAKED')
       $scope.dealModal.hide()

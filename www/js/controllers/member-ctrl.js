@@ -13,7 +13,7 @@ controllers
   }
 })
 
-.controller('MemberDetailCtrl', function($scope, $controller, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal) {
+.controller('MemberDetailCtrl', function($scope, $controller, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal, CurrentEmploye) {
   $scope.profileModal = '/templates/member-profile-modal.html'
   $scope.resource = Member
   $controller('ListDetailCtrl', {$scope: $scope})
@@ -46,7 +46,7 @@ controllers
       Point.create({
         point: res.point,
         memberID: $scope.entity.id,
-        agentID: $scope.currentUser.employeID,
+        agentID: CurrentEmploye.id,
         reason: res.reason
       }, function (point) {
         $scope.entity.postPoint = point.postPoint
@@ -87,9 +87,9 @@ controllers
         dealType: res.dealType,
         amount: amount,
         billNumber: now,
-        shopID: $scope.currentEmploye.shopID,
-        merchantID: $scope.currentEmploye.merchantID,
-        agentID: $scope.currentUser.employeID,
+        shopID: CurrentEmploye.shopID,
+        merchantID: CurrentEmploye.merchantID,
+        agentID: CurrentEmploye.id,
         cashSettlement: {
           "status": 'closed',
           serialNumber: now,

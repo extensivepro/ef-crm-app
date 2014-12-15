@@ -1,4 +1,4 @@
-angular.module('starter.services', ['lbServices'])
+angular.module('starter.services', ['ef-services2'])
 
 .factory('Friends', function() {
   // Might use a resource here that returns a JSON array
@@ -18,14 +18,6 @@ angular.module('starter.services', ['lbServices'])
     get: function(friendId) {
       // Simple index lookup
       return friends[friendId];
-    }
-  }
-})
-
-.factory('MakeDeal', function () {
-  return {
-    make: function () {
-      return true
     }
   }
 })

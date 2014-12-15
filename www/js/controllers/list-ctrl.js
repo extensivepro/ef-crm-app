@@ -2,7 +2,7 @@
  * List Controller
  */
 
-var configProfileModal = function ($scope, $ionicModal) {
+var configProfileModal = function ($scope, $ionicModal, CurrentEmploye) {
   if($scope.profileModal) {
     $ionicModal.fromTemplateUrl($scope.profileModal, {
       scope: $scope,
@@ -32,7 +32,7 @@ var configProfileModal = function ($scope, $ionicModal) {
     })
 
     $scope.trySave = function () {
-      $scope.entity.merchantID = $scope.currentEmploye.merchant.id
+      $scope.entity.merchantID = CurrentEmploye.merchantID
       $scope.resource.upsert($scope.entity, function (entity) {
         $scope.$emit('RESOURCE_UPSERT')
         $scope.modal.hide()
@@ -45,7 +45,7 @@ var configProfileModal = function ($scope, $ionicModal) {
 
 angular.module('baseController', [])
 
-.controller('ListCtrl', function ListCtrl($scope, $state, $ionicModal) {
+.controller('ListCtrl', function ListCtrl($scope, $state, $ionicModal, CurrentEmploye) {
   $scope.entities = []
   $scope.orderOptions = ['createdAt DESC']
   $scope.search = {
@@ -58,14 +58,14 @@ angular.module('baseController', [])
   $scope.limit = 20
 
   var fetch = function (successCb, errorCb) {
-    if(!$scope.currentEmploye) return
+    if(!CurrentEmploye.id) return
     var filter = { 
       order: $scope.orderOptions,
       skip: $scope.pageNumber*$scope.limit,
       limit: $scope.limit,
       where: {
         and: [
-          { merchantID: $scope.currentEmploye.merchantID } 
+          { merchantID: CurrentEmploye.merchantID } 
         ]
       }
     }

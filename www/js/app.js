@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform, $rootScope, User, $state, Employe) {
+.run(function($ionicPlatform, $rootScope, User, $state, CurrentEmploye) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,14 +20,14 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
     }
     
     User.getCurrent(function (user) {
-      setCurrentUser(user)
+      CurrentEmploye.setEmploye(user)
     }, function () {
       $rootScope.$broadcast('AUTH_LOGOUT')
     })
   });
   
   $rootScope.$on('AUTH_LOGIN', function(e, accessToken) {
-    setCurrentUser(accessToken.user)
+    CurrentEmploye.setEmploye(accessToken.user)
     if (!accessToken.user.employeID) {
       $state.go('register', {}, {location: false})
     } else {
@@ -36,25 +36,9 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   });
 
   $rootScope.$on('AUTH_LOGOUT', function(e, user) {
+    CurrentEmploye.clearEmploye()
     $state.go('login')
   });
-  
-  var setCurrentUser = function (user) {
-    $rootScope.currentUser = user
-    if(user.employeID) {
-      Employe.findOne({
-        filter:{
-          where:{id:user.employeID}, 
-          include:['merchant', 'shop']
-        }
-      }, function (employe) {
-        $rootScope.currentEmploye = employe
-        $rootScope.$broadcast('CURRENT_EMPLOYE_READY')
-      }, function (res) {
-        console.log('Find employe error')
-      })
-    }
-  }
   
 })
 

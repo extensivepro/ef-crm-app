@@ -1,21 +1,12 @@
 controllers
 
-.controller('BillCtrl', function($scope, $controller, Bill) {
-  $controller('ListCtrl', {$scope: $scope})
-  $scope.resource = Bill
-  $scope.includes = ['agent']
-  $scope.detailState = 'tab.bills-detail'
-})
-
-.controller('BillDetailCtrl', function($scope, $controller, $stateParams, Bill) {
-  $controller('ListDetailCtrl', {$scope: $scope})
-})
-
-.controller('AccountCtrl', function($scope, $rootScope, $state, User, Employe, $ionicPopup) {
+.controller('AccountCtrl', function($scope, CurrentEmploye, $state, User, CurrentEmploye, $ionicPopup) {
   
-  $scope.logout = function () {
-    $rootScope.currentEmploye = undefined
+  $scope.currentEmploye = CurrentEmploye
+  
+  $scope.logout = function () {    
     User.logout(function () {
+      CurrentEmploye.clearEmploye()
       $state.go('login')
     })
   }
@@ -52,7 +43,7 @@ controllers
       if(!res) return
 			
 	    User.upsert({
-	      id: $scope.currentUser.id,
+	      id: User.getCurrentId(),
 	      password: res.password
 	    }, function (user) {
 	    }, function (res) {
@@ -116,9 +107,9 @@ controllers
   $scope.merchant = {
     name: "泛盈百货"+now,
     fullName: "泛盈百货有限公司"+now,
-    ownerID: $scope.currentUser.id,
-    telephone: $scope.currentUser.username,
-    masterPhone: $scope.currentUser.username
+    ownerID: User.getCurrentId(),
+    telephone: User.getCachedCurrent().username,
+    masterPhone: User.getCachedCurrent().username
   }
   
   $scope.blurCb = function (event) {
