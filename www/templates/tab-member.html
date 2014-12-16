@@ -1,5 +1,5 @@
 <ion-view title="所有会员">
-  <ion-nav-buttons side="right">
+  <ion-nav-buttons side="right" ng-if="!showOnly">
     <button class="button button-icon icon ion-ios7-plus-empty" ng-click="openModal()"></button>
   </ion-nav-buttons>
 
@@ -13,7 +13,7 @@
     </label>
     
     <ion-list>
-      <ion-item class="" ng-repeat="entity in entities" ng-click="showDetail(entity)">
+      <ion-item class="" ng-repeat="entity in entities" ng-click="selectEntity(entity)">
         <b>{{entity.name}}</b>
         <span class="item-note positive">
           {{entity.phone}}

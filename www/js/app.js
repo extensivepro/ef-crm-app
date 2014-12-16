@@ -138,7 +138,24 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
         }
       }
     })
-    
+    .state('tab.deal-transaction', {
+      url: '/dealtransaction',
+      views: {
+        'tab-items': {
+          templateUrl: 'templates/deal-transaction.html',
+          controller: 'DealTransactionCtrl'
+        }
+      }
+    })
+    .state('tab.select-member', {
+      url: '/members/select',
+      views: {
+        'tab-items': {
+          templateUrl: 'templates/tab-member.html',
+          controller: 'SelectMemberCtrl'
+        }
+      }
+    })
 
     .state('tab.account', {
       url: '/account',
@@ -148,7 +165,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
           controller: 'AccountCtrl'
         }
       }
-    });
+    })    
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/members');

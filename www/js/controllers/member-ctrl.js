@@ -13,7 +13,7 @@ controllers
   }
 })
 
-.controller('MemberDetailCtrl', function($scope, $controller, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal, CurrentEmploye) {
+.controller('MemberDetailCtrl', function($scope, $controller, $stateParams, Member, Point, Bill, $ionicPopup, $ionicModal, CurrentEmploye, DealTransaction, $state) {
   $scope.profileModal = '/templates/member-profile-modal.html'
   $scope.resource = Member
   $controller('ListDetailCtrl', {$scope: $scope})
@@ -122,6 +122,11 @@ controllers
         $scope.alerts.push({type: 'danger', msg: '储值操作失败'})
       })
     })
+  }
+  
+  $scope.book = function () {
+    DealTransaction.setMember($scope.entity)
+    $state.go('tab.items')
   }
 })
 

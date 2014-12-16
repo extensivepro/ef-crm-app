@@ -131,6 +131,10 @@ angular.module('baseController', [])
     })
   }
 
+  $scope.selectEntity = function (entity) {
+    $scope.showDetail(entity)
+  }
+  
   $scope.showDetail = function (entity) {
     $state.go($scope.detailState, {entity:JSON.stringify(entity)}, {location: true})
   }
