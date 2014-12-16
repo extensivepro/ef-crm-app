@@ -1,4 +1,4 @@
-<ion-view title="{{entity.id? '交易详情' : '记账' }}">
+<ion-view title="{{entity.id? '账单详情' : '结账' }}">
 
   <ion-nav-buttons side="right">
     <button class="button button-clear button-positive" ng-click="close()">关闭交易</button>
@@ -18,12 +18,11 @@
     </div>
 
     <div class="list card">
-      <div class="item item-divider">购物清单</div>
-      <a class="item" ng-repeat="dealItem in deal.items">
-        <h2>{{dealItem.item.name}}</h2>
-        <small>{{dealItem.dealPrice/100 | currency : '¥'}} X {{dealItem.quantity}}</small>
+      <div class="item item-divider">账单</div>
+      <a class="item">
+        现金支付
         <span class="item-note positive">
-          小计 {{dealItem.dealPrice * dealItem.quantity /100 | currency: '¥'}}
+          {{deal.bill.cashSettlement * dealItem.quantity /100 | currency: '¥'}}
         </span>
       </a>
       <div class="item item-divider">
@@ -34,8 +33,8 @@
       </div>
     </div>
 
-    <a href="#/tab/settlement" class="button button-full button-assertive"  ng-class=" {'disabled': deal.quantity === 0}">
-      去结账
+    <a ng-click="tryMakeDeal()" class="button button-full button-assertive"  ng-class=" {'disabled': deal.quantity === 0}">
+      结账
     </a>    
 
   </ion-content>

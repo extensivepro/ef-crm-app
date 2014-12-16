@@ -12,10 +12,6 @@ controllers
     $scope.entity.price *= 100
   }
 
-  $scope.tryMakeDeal = function () {
-    return console.log($scope.deal)
-  }
-  
   $scope.registerGood = function (item) {
     DealTransaction.registerItem(item)
   }
@@ -49,3 +45,14 @@ controllers
     $state.go('tab.deal-transaction', {}, {location: true})
   }
 })
+
+.controller('BillSettlementCtrl', function ($scope, DealTransaction, $state) {
+  $scope.deal = DealTransaction
+  $scope.entity = DealTransaction.bill
+  
+  $scope.close = function () {
+    DealTransaction.close()
+    $state.go('tab.items')
+  }
+})
+

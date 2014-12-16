@@ -156,6 +156,15 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
         }
       }
     })
+    .state('tab.bill-settlement', {
+      url: '/settlement',
+      views: {
+        'tab-items': {
+          templateUrl: 'templates/bill-detail.html',
+          controller: 'BillSettlementCtrl'
+        }
+      }
+    })
 
     .state('tab.account', {
       url: '/account',
