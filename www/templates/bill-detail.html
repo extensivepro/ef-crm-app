@@ -13,7 +13,7 @@
         <span class="">
           折扣<span class="balanced padding">{{entity.discountAmount/100 | currency: '￥'}}</span>
         </span>
-        <span class="item-note positive">
+        <span class="item-note positive" ng-show="!!entity.id">
           {{entity.createdAt | dateFormat: 'YYYY/MM/DD HH:mm'}}
         </span>
       </div>
@@ -25,7 +25,7 @@
         </span>
       </div>
 
-      <div class="item">
+      <div class="item" ng-if="!!entity.id">
         经手
         <span class="positive item-note">
           {{entity.agent.name}}
@@ -38,22 +38,28 @@
       <div class="item item-divider">
         结算方式
       </div>
-      <div class="item" ng-if="!!entity.cashSettlement">
+      <div class="item item-label" ng-show="!!entity.cashSettlement || !entity.id">
         现金
-        <span class="item-note positive">
-          {{entity.cashSettlement.amount/100 | currency: '￥'}}
+        <span class="item-note positive" ng-if="entity.id">
+          {{(entity.cashSettlement.amount || 0)/100 | currency: '￥'}}
         </span>
+        <input type="number" ng-model="entity.cashSettlement.amount" ng-if="!entity.id">
       </div>
 
-      <div class="item" ng-if="!!entity.memberSettlement">
-        <span class="positive" ng-if="!!entity.memberSettlement.payeeAccount">{{entity.memberSettlement.payeeAccount.name}}</span>
-        储值余额
-        <span class="item-note positive">
-          {{entity.memberSettlement.amount/100 | currency: '￥'}}
+      <div class="item" ng-show="!!entity.memberSettlement">
+        <span class="item input-label"><span class="positive" ng-if="!!entity.memberSettlement.payeeAccount">{{entity.memberSettlement.payeeAccount.name}}</span>
+        储值余额</span>
+        <input type="number" ng-model="entity.memberSettlement.amount" ng-if="!entity.id">
+        <span class="item-note positive"  ng-if="entity.id">
+          {{(entity.memberSettlement.amount || 0)/100  | currency: '￥'}}
         </span>
       </div>
 
     </div>
-        
+    
+    <a ng-click="settle()" class="button button-full button-assertive">
+      结账
+    </a>
+    
   </ion-content>
 </ion-view>

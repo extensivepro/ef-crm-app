@@ -8,7 +8,7 @@
     <div class="list card">
       <a class="item item-avatar" href="#/tab/members/select">
         <img src="img/avatar.png">
-        <span class="item-note">
+        <span class="item-note" ng-show="!!deal.buyer">
           会员号 {{deal.buyer.code}}
         </span>
         <h2>
@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <a href="#/tab/settlement" class="button button-full button-assertive"  ng-class=" {'disabled': deal.quantity === 0}">
+    <a ng-click="goSettlement()" class="button button-full button-assertive"  ng-class=" {'disabled': deal.fee === 0}">
       去结账
     </a>    
 

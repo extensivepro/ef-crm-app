@@ -32,6 +32,12 @@ controllers
     DealTransaction.close()
     $state.go('tab.items')
   }
+
+  $scope.goSettlement = function () {
+    DealTransaction.bill.amount = DealTransaction.fee
+    $state.go('tab.settlement')
+  }
+
 })
 
 .controller('SelectMemberCtrl', function ($scope, $controller, Member, DealTransaction, $state) {
@@ -44,15 +50,23 @@ controllers
     DealTransaction.setMember(entity)
     $state.go('tab.deal-transaction', {}, {location: true})
   }
+  
 })
 
-.controller('BillSettlementCtrl', function ($scope, DealTransaction, $state) {
+.controller('SettlementCtrl', function ($scope, DealTransaction, $state, $ionicPopup) {
   $scope.deal = DealTransaction
   $scope.entity = DealTransaction.bill
   
-  $scope.close = function () {
-    DealTransaction.close()
-    $state.go('tab.items')
+  $scope.settle = function () {
+    DealTransaction.settle(function (deal) {
+      $state.go('tab.bills')
+    }, function (res, error) {
+      $ionicPopup.alert({
+        title: '结算失败',
+        template: '<h4 class="assertive">'+error.msg+'</h4>'
+      })
+    })
   }
+  
 })
 
