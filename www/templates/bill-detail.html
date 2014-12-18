@@ -43,13 +43,12 @@
         <span class="item-note positive" ng-if="entity.id">
           {{(entity.cashSettlement.amount || 0)/100 | currency: '￥'}}
         </span>
-        <input type="number" ng-model="entity.cashSettlement.amount" ng-if="!entity.id">
+        <input type="number" ng-model="entity.cashSettlement.amount" ng-if="!entity.id" ng-currency />
       </div>
 
       <div class="item" ng-show="!!entity.memberSettlement">
-        <span class="item input-label"><span class="positive" ng-if="!!entity.memberSettlement.payeeAccount">{{entity.memberSettlement.payeeAccount.name}}</span>
-        储值余额</span>
-        <input type="number" ng-model="entity.memberSettlement.amount" ng-if="!entity.id">
+        储值余额
+        <input type="number" ng-model="entity.memberSettlement.amount" ng-if="!entity.id" ng-currency />
         <span class="item-note positive"  ng-if="entity.id">
           {{(entity.memberSettlement.amount || 0)/100  | currency: '￥'}}
         </span>

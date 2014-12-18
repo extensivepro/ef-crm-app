@@ -58,8 +58,14 @@ controllers
   $scope.entity = DealTransaction.bill
   
   $scope.settle = function () {
+    
     DealTransaction.settle(function (deal) {
-      $state.go('tab.bills')
+      var pop = $ionicPopup.alert({
+        title: '结算成功'
+      })
+      pop.then(function () {
+        $state.go('tab.items')
+      })
     }, function (res, error) {
       $ionicPopup.alert({
         title: '结算失败',
