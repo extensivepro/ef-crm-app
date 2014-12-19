@@ -6,7 +6,7 @@
 
   <ion-content has-header="true" padding="true">
     <div class="list card">
-      <a class="item item-avatar" href="#/tab/members/select">
+      <a class="item item-avatar" ng-click="goSelectMember()">
         <img src="img/avatar.png">
         <span class="item-note" ng-show="!!deal.buyer">
           会员号 {{deal.buyer.code}}

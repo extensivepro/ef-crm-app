@@ -39,7 +39,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'starter.controllers', 'starter.
     CurrentEmploye.clearEmploye()
     $state.go('login')
   });
-  
+    
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
