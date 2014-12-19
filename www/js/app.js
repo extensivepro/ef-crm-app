@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ui.utils', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform, $rootScope, User, $state, CurrentEmploye) {
   $ionicPlatform.ready(function() {
@@ -42,7 +42,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   
 })
 
-.config(function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -179,9 +179,6 @@ angular.module('starter', ['ionic', 'ui.utils', 'LocalStorageModule', 'starter.c
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/members');
 
-  localStorageServiceProvider
-    .setPrefix('ef-crm-app')
-    .setNotify(true, true)
 })
 
 .filter("roleDictionary", function () {

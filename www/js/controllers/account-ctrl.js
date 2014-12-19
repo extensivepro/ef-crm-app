@@ -54,12 +54,13 @@ controllers
 
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, User, localStorageService, $ionicPopup, $timeout) {
-  $scope.loginData = localStorageService.get('loginData') || {}
+.controller('LoginCtrl', function($scope, $rootScope, User, $ionicPopup, $timeout) {
+  var loginDataString = localStorage['$EFCRM$LoginData'] || null
+  $scope.loginData =  loginDataString && JSON.parse(logiDataString) || {}
   
   var login = function (loginData) {
     User.login(loginData, function (accessToken) {
-      localStorageService.set('loginData', $scope.loginData)
+      localStorage['$EFCRM$LoginData'] = JSON.stringify($scope.loginData)
       $rootScope.$broadcast('AUTH_LOGIN', accessToken)
     }, function (res) {
       if(res.status === 401 && loginData.realm !== "owner") {
@@ -102,7 +103,7 @@ controllers
   
 })
 
-.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User, localStorageService) {
+.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User) {
   var now = Date.now()
   $scope.merchant = {
     name: "泛盈百货"+now,
@@ -118,7 +119,7 @@ controllers
   
   $scope.tryMerchantRegister = function () {
     Merchant.create($scope.merchant, function (merchant) {
-      var loginData = localStorageService.get('loginData')
+      var loginData = JSON.parse(localStorage['$EFCRM$LoginData'])
       loginData.realm = "employe."+loginData.username
       User.login(loginData, function (accessToken) {
         $rootScope.$broadcast('AUTH_LOGIN', accessToken)
