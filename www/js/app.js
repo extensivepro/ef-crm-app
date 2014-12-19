@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ui.utils', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ui.utils', 'ef.filters', 'ef.directives', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform, $rootScope, User, $state, CurrentEmploye) {
   $ionicPlatform.ready(function() {
@@ -180,76 +180,5 @@ angular.module('starter', ['ionic', 'ui.utils', 'starter.controllers', 'starter.
   $urlRouterProvider.otherwise('/tab/members');
 
 })
-
-.filter("roleDictionary", function () {
-  var dictionary = {
-    "shopManager": "店长",
-    "cashier": "收银员"
-  }
-  
-  return function (key) {
-    return dictionary[key];
-  }
-})
-
-.filter("dateFormat", function () {
-  return function (date, format) {
-    format = format || 'YYYY-MM-DD HH:mm:ss'
-    return moment.unix(date).format(format)
-  }
-})
-
-.filter("dealTypeDictionary", function () {
-  var dictionary = {
-    "deal": "消费",
-    "return": "退货退款",
-    "withdraw": "提现",
-    "writedown": "冲减",
-    "prepay": "充值"
-  }
-  return function (key) {
-    return dictionary[key] || '其他'
-  }
-})
-
-.filter("billOwner", function () {
-  return function (settlement) {
-    var owner = '走入客户'
-    if(settlement && settlement.payeeAccount) {
-      owner = settlement.payeeAccount.name
-    } else if(settlement && settlement.payerAccount) {
-      owner = settlement.payerAccount.name
-    }
-    return owner
-  }
-})
-
-.filter("statusDictionary", function () {
-  var dictionary = {
-    "sale": "上架",
-    "desale": "下架",
-    "removed": "已删除"
-  }
-  return function (key) {
-    return dictionary[key] || '其他'
-  }
-})
-
-.directive('ngCurrency', ['$filter', function ($filter) {
-  return {
-    require: 'ngModel',
-    link: function (scope, element, attrs, ngModel) {
-
-      ngModel.$formatters.unshift(function (a) {
-        return $filter('currency')(ngModel.$modelValue/100)
-      })
-      
-      ngModel.$parsers.push(function (viewValue) {
-        return viewValue*100
-      })
-            
-    }
-  }
-}])
 
 var controllers = angular.module('starter.controllers', ['baseController'])
