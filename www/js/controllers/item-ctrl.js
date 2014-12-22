@@ -38,7 +38,7 @@ controllers
   }
 
   $scope.goSettlement = function () {
-    DealTransaction.bill.amount = DealTransaction.fee
+    DealTransaction.account()
     $state.go('tab.settlement', {}, {location: false})
   }
 
@@ -61,20 +61,24 @@ controllers
   
 })
 
-.controller('SettlementCtrl', function ($scope, DealTransaction, $state, $ionicPopup, $timeout, $ionicHistory) {
+.controller('SettlementCtrl', function ($scope, DealTransaction, $state, $ionicPopup, $timeout, $ionicHistory, $ionicLoading) {
   $scope.deal = DealTransaction
   $scope.entity = DealTransaction.bill
-  $scope.btnIcon = 'ion-card'
   
   $scope.settle = function () {
-    $scope.btnIcon = 'ion-load-d'
+    $ionicLoading.show({
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>正在结算...'
+    })
     DealTransaction.settle(function (deal) {
-      $scope.btnIcon = 'ion-ios7-checkmark-outline'
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>结算成功',
+        duration: 1000
+      })
       $timeout(function () {
         $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
       }, 1000)
     }, function (res, error) {
-      $scope.btnIcon = 'ion-card'
+      $ionicLoading.hide()
       $ionicPopup.alert({
         title: '结算失败',
         template: '<h4 class="assertive">'+error.msg+'</h4>'

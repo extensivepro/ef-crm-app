@@ -11,7 +11,7 @@
     <div class="list">
       
       <div class="item item-icon-left" ng-repeat="entity in entities" ng-click="showDetail(entity)">
-        <i class="icon" ng-class="entity.dealType === 'prepay'?'ion-ios7-plus-outline assertive': 'ion-ios7-minus-outline balanced'"></i>
+        <i ef-dealtype="{{entity.dealType}}"></i>
         <span class="item-note positive">
           {{entity.memberSettlement | billOwner}}
         </span>
@@ -20,6 +20,10 @@
         </h2>
         <span class="">
           折扣<span class="balanced padding">{{entity.discountAmount/100 | currency: '￥'}}</span>
+        </span>
+        <br>
+        <span class="">
+          应收<span class="dark padding">{{(entity.amount-entity.discountAmount)/100 | currency: '￥'}}</span>
         </span>
         <span class="item-note positive">
           {{entity.createdAt | dateFormat: 'YYYY/MM/DD HH:mm'}}

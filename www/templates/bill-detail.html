@@ -3,7 +3,8 @@
     <div class="list card">
 
       <div class="item item-icon-left">
-        <i class="icon" ng-class="entity.dealType === 'prepay'?'ion-ios7-plus-outline assertive': 'ion-ios7-minus-outline balanced'"></i>
+        <i ef-dealtype="{{entity.dealType}}"></i>
+        
         <span class="item-note positive">
           {{entity.memberSettlement | billOwner}}
         </span>
@@ -43,20 +44,19 @@
         <span class="item-note positive" ng-if="entity.id">
           {{(entity.cashSettlement.amount || 0)/100 | currency: '￥'}}
         </span>
-        <input type="number" ng-model="entity.cashSettlement.amount" ng-if="!entity.id" ng-currency />
+        <input type="number" placeholder="请输入现金支付金额，例如：100.00" ng-model="entity.cashSettlement.amount" ng-if="!entity.id" ef-currency />
       </div>
 
       <div class="item" ng-show="!!entity.memberSettlement">
         储值余额
-        <input type="number" ng-model="entity.memberSettlement.amount" ng-if="!entity.id" ng-currency />
-        <span class="item-note positive"  ng-if="entity.id">
+        <span class="item-note positive">
           {{(entity.memberSettlement.amount || 0)/100  | currency: '￥'}}
         </span>
       </div>
 
     </div>
     
-    <a ng-click="settle()" class="button button-full button-assertive icon" ng-if="!entity.id" ng-class="btnIcon">
+    <a ng-click="settle()" class="button button-full button-balanced icon ion-card" ng-if="!entity.id">
       结账
     </a>
         

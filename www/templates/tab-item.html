@@ -1,7 +1,10 @@
 <ion-view title="所有商品">
   
   <ion-nav-buttons side="left">
-    <a class="button button-icon" ng-class="deal.quantity > 0 ? 'ion-ios7-cart' : 'ion-ios7-cart-outline'" ng-click="goDealTransaction()">{{deal.quantity}}</a>
+    <a class="button button-clear" ng-click="goDealTransaction()">
+      <i class="icon" ng-class="deal.quantity > 0 ? 'ion-ios7-cart royal' : 'ion-ios7-cart-outline'"></i>
+      <span ng-class="{royal:deal.quantity>0}">{{deal.quantity}}</span>
+    </a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <button class="button button-icon icon ion-ios7-plus-empty" ng-click="openModal()"></button>
