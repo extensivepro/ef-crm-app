@@ -86,5 +86,41 @@ controllers
     })
   }
   
+  $scope.discount = function () {
+    $scope.data = {value:0, discountAmount: false}
+
+    $ionicPopup.show({
+      templateUrl: 'bill-discount-popup.html',
+      title: '整单折扣',
+      scope: $scope,
+      buttons: [
+        { text: '取消' },
+        {
+          text: '<b>确定</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if ($scope.data.value === 0
+              || (!$scope.data.discountAmount && ($scope.data.value > 99 || $scope.data.value < 1))) {
+              e.preventDefault()
+            } else {
+              return $scope.data
+            }
+          }
+        },
+      ]
+    }).then(function(res) {
+      if(!res) return
+      
+      if(res.discountAmount) {
+        $scope.entity.discountAmount = res.value 
+      } else {
+        $scope.entity.discountAmount = $scope.entity.amount*res.value/100
+      }
+      
+      DealTransaction.account()
+      
+    })
+  }
+  
 })
 

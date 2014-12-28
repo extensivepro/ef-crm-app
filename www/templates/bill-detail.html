@@ -2,19 +2,23 @@
   <ion-content has-header="true" padding="true">
     <div class="list card">
 
-      <div class="item item-icon-left">
+      <div class="item item-icon-left" ng-click="discount()">
         <i ef-dealtype="{{entity.dealType}}"></i>
         
         <span class="item-note positive">
           {{entity.memberSettlement | billOwner}}
         </span>
         <h2>
-          {{entity.dealType | dealTypeDictionary}}<span class="positive padding">{{entity.amount/100 | currency: '￥' }}</span>
+          {{entity.dealType | dealTypeDictionary}}<span class="padding">{{entity.amount/100 | currency: '￥' }}</span>
         </h2>
         <span class="">
           折扣<span class="balanced padding">{{entity.discountAmount/100 | currency: '￥'}}</span>
         </span>
-        <span class="item-note positive" ng-show="!!entity.id">
+        <br>
+        <span class="">
+          应收<span class="positive padding">{{(entity.amount-entity.discountAmount)/100 | currency: '￥'}}</span>
+        </span>
+        <span class="item-note" ng-show="!!entity.id">
           {{entity.createdAt | dateFormat: 'YYYY/MM/DD HH:mm'}}
         </span>
       </div>
@@ -38,14 +42,20 @@
     <div class="list card">
       <div class="item item-divider">
         结算方式
+        <span class="item-note positive">
+          {{(entity.amount-entity.discountAmount)/100 | currency: '￥'}}
+        </span>
       </div>
-      <div class="item item-label" ng-show="!!entity.cashSettlement || !entity.id">
+      <div class="item item-lable" ng-show="!!entity.cashSettlement && !!entity.id" >
         现金
         <span class="item-note positive" ng-if="entity.id">
           {{(entity.cashSettlement.amount || 0)/100 | currency: '￥'}}
         </span>
-        <input type="number" placeholder="请输入现金支付金额，例如：100.00" ng-model="entity.cashSettlement.amount" ng-if="!entity.id" ef-currency />
       </div>
+      <label class="item item-input" ng-if="!entity.id">
+        <span class="input-label">现金</span>
+        <input type="text" patten="[0~9]*" placeholder="请输入现金支付金额，例如：100.00" ng-model="entity.cashSettlement.amount" style="text-align: right; padding-right: 22px;" ef-currency />
+      </label>
 
       <div class="item" ng-show="!!entity.memberSettlement">
         储值余额
@@ -54,6 +64,12 @@
         </span>
       </div>
 
+      <div class="item item-divider" ng-if="!entity.id">
+        找零
+        <span class="item-note" ng-class="deal.change() < 0?'assertive':'positive'">
+          {{deal.change()/100  | currency: '￥'}}
+        </span>
+      </div>
     </div>
     
     <a ng-click="settle()" class="button button-full button-balanced icon ion-card" ng-if="!entity.id">
@@ -62,3 +78,11 @@
         
   </ion-content>
 </ion-view>
+
+<script id="bill-discount-popup.html" type="text/ng-template">
+    <label class="item item-input">
+      <input type="number" ng-model="data.value" ef-currency ng-if="data.discountAmount" />
+      <input type="number" ng-model="data.value" ng-if="!data.discountAmount" />
+    </label>
+    <ion-toggle ng-model="data.discountAmount">{{data.discountAmount?'直减' : '打折: 1~99, 50=5折'}}</ion-toggle>
+</script>

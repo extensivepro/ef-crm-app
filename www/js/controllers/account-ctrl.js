@@ -56,7 +56,7 @@ controllers
 
 .controller('LoginCtrl', function($scope, $rootScope, User, $ionicPopup, $timeout) {
   var loginDataString = localStorage['$EFCRM$LoginData'] || null
-  $scope.loginData =  loginDataString && JSON.parse(logiDataString) || {}
+  $scope.loginData =  (loginDataString && JSON.parse(loginDataString)) || {}
   
   var login = function (loginData) {
     User.login(loginData, function (accessToken) {

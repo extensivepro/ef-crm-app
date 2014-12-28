@@ -8,12 +8,15 @@
     <div class="list card">
       <a class="item item-avatar" ng-click="goSelectMember()">
         <img src="img/avatar.png">
-        <span class="item-note" ng-show="!!deal.buyer">
-          会员号 {{deal.buyer.code}}
-        </span>
         <h2>
           <span class="positive">{{deal.buyer.name || '走入顾客' }}</span> 
         </h2>
+        <small class="dark" ng-show="!!deal.buyer">
+          会员号 {{deal.buyer.code}}
+        </small>
+        <span ng-if="!!deal.bill.memberSettlement" class="item-note">
+          储值<span class="balanced padding">{{deal.bill.memberSettlement.payerAccount.balance/100 | currency : '¥'}}</span>
+        </span>
       </a>
     </div>
 

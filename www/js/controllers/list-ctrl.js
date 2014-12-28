@@ -114,6 +114,7 @@ angular.module('baseController', [])
   $scope.$on('CURRENT_EMPLOYE_READY', function () {
     $scope.fetch()
   })
+  
   $scope.moreDataCanBeLoaded = function () {
     return moreData
   }
