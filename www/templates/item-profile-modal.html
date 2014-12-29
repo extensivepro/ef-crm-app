@@ -12,11 +12,11 @@
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">商品编号</span>
-        <input type="text" placeholder="例如：1000231" ng-model="entity.code" ui-event="{ blur : 'blurCb($event)' }">
+        <input type="text" placeholder="例如：1000231" ng-model="entity.code">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">零售价</span>
-        <input type="number" placeholder="例如：5600" ng-model="entity.price" ui-event="{ blur : 'blurCb($event)' }">
+        <input type="text" patten="[0~9]*" placeholder="例如：5600" ng-model="entity.price" ef-currency />
       </label>
     </div>
   </ion-content>

@@ -18,11 +18,13 @@
     </label>
 
     <div class="list">
-      <div class="item item-button-right" ng-repeat="entity in entities" ng-click="registerGood(entity)">
-        <b>{{entity.name}}</b>
-        <span class="item-note positive">
-          {{entity.price/100 | currency: '￥' }}
-        </span>
+      <div class="item item-button-right" ng-repeat="entity in entities">
+        <div ng-click="registerGood(entity)">
+          <b>{{entity.name}}</b>
+          <span class="item-note positive">
+            {{entity.price/100 | currency: '￥' }}
+          </span>          
+        </div>
         <a class="button button-clear button-positive" ng-click="showDetail(entity)">
           <i class="icon ion-ios7-information-outline"></i>
         </a>

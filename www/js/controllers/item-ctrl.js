@@ -1,6 +1,6 @@
 controllers
 
-.controller('ItemCtrl', function($scope, $controller, Item, CurrentEmploye, DealTransaction, $state) {  
+.controller('ItemCtrl', function($scope, $controller, Item, DealTransaction, $state) {  
   $scope.profileModal = '/templates/item-profile-modal.html'
   
   $controller('ListCtrl', {$scope: $scope})
@@ -22,11 +22,16 @@ controllers
   
 })
 
-.controller('ItemDetailCtrl', function($scope, $controller, $stateParams, Item) {
+.controller('ItemDetailCtrl', function($scope, $controller, $stateParams, Item, DealTransaction, $state) {
   $scope.profileModal = '/templates/item-profile-modal.html'
   $scope.resource = Item
 
-  $controller('ListDetailCtrl', {$scope: $scope})
+  $controller('ListDetailCtrl', {$scope: $scope, $stateParams: $stateParams})
+
+  $scope.registerGood = function () {
+    DealTransaction.registerItem($scope.entity)
+    $state.go('tab.items')
+  }
 })
 
 .controller('DealTransactionCtrl', function ($scope, DealTransaction, $state) {

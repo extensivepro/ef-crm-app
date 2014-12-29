@@ -140,16 +140,16 @@ angular.module('baseController', [])
     $state.go($scope.detailState, {entity:JSON.stringify(entity)}, {location: true})
   }
 
-  configProfileModal($scope, $ionicModal)
+  configProfileModal($scope, $ionicModal, CurrentEmploye)
   
   $scope.init = function() {
     $scope.fetch()
   }
 })
 
-.controller('ListDetailCtrl', function ListCtrl($scope, $stateParams, $ionicModal) {
+.controller('ListDetailCtrl', function ListDetailCtrl($scope, $stateParams, $ionicModal, CurrentEmploye) {
   $scope.entity = JSON.parse($stateParams.entity)
 
-  configProfileModal($scope, $ionicModal)
+  configProfileModal($scope, $ionicModal, CurrentEmploye)
   
 })
