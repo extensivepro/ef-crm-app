@@ -2,11 +2,12 @@ controllers
 
 .controller('MemberCtrl', function($scope, $controller, Member, $ionicModal) {
   
-  $scope.profileModal = '/templates/member-profile-modal.html'
+  $scope.profileModal = 'templates/member-profile-modal.html'
   $controller('ListCtrl', {$scope: $scope})
   $scope.resource = Member
   $scope.search.orFields = ['name', 'phone']
   $scope.detailState = 'tab.members-detail'
+  $scope.showOnly = false
   
   $scope.blurCb = function ($event) {
     $scope.entity.code = $scope.entity.code || $scope.entity.phone

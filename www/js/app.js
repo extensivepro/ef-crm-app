@@ -177,7 +177,7 @@ angular.module('starter', ['ionic', 'ui.utils', 'ef.filters', 'ef.directives', '
     })    
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/members');
+  $urlRouterProvider.otherwise('/login');
 
 })
 

@@ -65,7 +65,7 @@ angular.module('baseController', [])
       limit: $scope.limit,
       where: {
         and: [
-          { merchantID: CurrentEmploye.merchantID } 
+          { merchantID: CurrentEmploye.merchantID }
         ]
       }
     }
@@ -108,6 +108,7 @@ angular.module('baseController', [])
   })
   
   $scope.$watch('search.text', function (newValue, oldValue) {
+    console.log('watch---', newValue, oldValue)
     $scope.fetch()
   })
   

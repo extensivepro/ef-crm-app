@@ -1,7 +1,7 @@
 controllers
 
 .controller('ItemCtrl', function($scope, $controller, Item, DealTransaction, $state) {  
-  $scope.profileModal = '/templates/item-profile-modal.html'
+  $scope.profileModal = 'templates/item-profile-modal.html'
   
   $controller('ListCtrl', {$scope: $scope})
   $scope.resource = Item
@@ -119,7 +119,7 @@ controllers
       if(res.discountAmount) {
         $scope.entity.discountAmount = res.value 
       } else {
-        $scope.entity.discountAmount = $scope.entity.amount*res.value/100
+        $scope.entity.discountAmount = $scope.entity.amount*(100-res.value)/100
       }
       
       DealTransaction.account()
