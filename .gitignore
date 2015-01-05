@@ -7,3 +7,4 @@ plugins/
 
 www/lib/
 resources/ios/*
+resources/android/*
