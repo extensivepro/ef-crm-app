@@ -108,7 +108,6 @@ angular.module('baseController', [])
   })
   
   $scope.$watch('search.text', function (newValue, oldValue) {
-    console.log('watch---', newValue, oldValue)
     $scope.fetch()
   })
   

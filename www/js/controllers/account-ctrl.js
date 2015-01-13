@@ -46,20 +46,35 @@ controllers
 	      id: User.getCurrentId(),
 	      password: res.password
 	    }, function (user) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>密码修改成功',
+          duration: 1000
+        })
 	    }, function (res) {
-	      $scope.alerts.push({type: 'danger', msg: '更新用户密码失败'})      
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-close-outline padding"></i>更新用户密码失败',
+          duration: 2000
+        })
 	    })
     })
   }
 
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, User, $ionicPopup, $timeout) {
+.controller('LoginCtrl', function($scope, $rootScope, User, $ionicLoading) {
   var loginDataString = localStorage['$EFCRM$LoginData'] || null
   $scope.loginData =  (loginDataString && JSON.parse(loginDataString)) || {}
   
   var login = function (loginData) {
+    $ionicLoading.show({
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>正在登录...'
+    })
     User.login(loginData, function (accessToken) {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
+        duration: 1000
+      })
+      
       localStorage['$EFCRM$LoginData'] = JSON.stringify($scope.loginData)
       $rootScope.$broadcast('AUTH_LOGIN', accessToken)
     }, function (res) {
@@ -67,14 +82,10 @@ controllers
         loginData.realm = "owner"
         login(loginData)
       } else {
-        var myPopup = $ionicPopup.show({
-          title: '登录失败',
-          subTitle: '用户名密码不正确',
-          buttons: [{ text: '关闭' }]
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-close-outline padding"></i>用户名密码不正确',
+          duration: 2000
         })
-        $timeout(function() {
-           myPopup.close();
-        }, 3000)
       }
     })
   }
@@ -87,23 +98,28 @@ controllers
   $scope.tryRegister = function (loginData) {
     loginData.email = loginData.username+"@example.com"
     loginData.realm = "owner"
+
+    $ionicLoading.show({
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>正在注册新账户...'
+    })
+
     User.create(loginData, function (user) {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>注册账户成功',
+        duration: 1000
+      })
       login(loginData)
     }, function (res) {
-      var myPopup = $ionicPopup.show({
-        title: '注册失败',
-        subTitle: '手机已经存在，请直接登录或换其他手机',
-        buttons: [{ text: '关闭' }]
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-close-outline padding"></i>手机已经存在，请直接登录或换其他手机',
+        duration: 2000
       })
-      $timeout(function() {
-         myPopup.close();
-      }, 3000)
     })
   }
   
 })
 
-.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User) {
+.controller('RegisterCtrl', function($scope, $rootScope, Merchant, User, $ionicLoading) {
   var now = Date.now()
   $scope.merchant = {
     name: "泛盈百货"+now,
@@ -118,13 +134,36 @@ controllers
   }
   
   $scope.tryMerchantRegister = function () {
+    $ionicLoading.show({
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>正在注册新账户...'
+    })
+
     Merchant.create($scope.merchant, function (merchant) {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>注册商户成功',
+        duration: 1000
+      })
       var loginData = JSON.parse(localStorage['$EFCRM$LoginData'])
       loginData.realm = "employe."+loginData.username
+      // First employe of merchant is created automaticly, default password is "123456"
+      var savedPassword = loginData.password
+      loginData.password = "123456"
       User.login(loginData, function (accessToken) {
+        User.upsert({
+	        id: User.getCurrentId(),
+	        password: savedPassword
+        })
         $rootScope.$broadcast('AUTH_LOGIN', accessToken)
       }, function (res) {
-        console.log('relogin as employe failure', res)
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-close-outline padding"></i>店长登录失败',
+          duration: 2000
+        })
+      })
+    }, function (res) {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-close-outline padding"></i>注册商户失败',
+        duration: 2000
       })
     })
   }
